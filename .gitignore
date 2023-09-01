@@ -1,0 +1,11 @@
+
+.vs/
+Library/
+Logs/
+obj/
+Packages/
+Temp/
+UserSettings/
+.vsconfig
+Assembly-CSharp.csproj
+puc-projeto-3d.sln

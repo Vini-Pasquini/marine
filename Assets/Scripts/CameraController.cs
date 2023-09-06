@@ -15,21 +15,14 @@ public class CameraController : MonoBehaviour
     private float cameraSpeed = .015f;
 
     [SerializeField] private GameObject boatLocator;
-    private Image boatLocatorImage;
-
-    // LocateBoat()
-    Vector3 newBoatLocatorViewportPosition = Vector3.zero;
-    Vector3 screenCenter;
-    Vector3 screenUp;
 
     private void Start()
     {
         lockOnPlayer = true;
         clickPosition = Vector3.zero;
-        boatLocatorImage = boatLocator.GetComponent<Image>();
-        boatLocatorImage.enabled = false;
-        screenCenter = Camera.main.ViewportToScreenPoint(new Vector3(.5f, .5f, 0f)); // const
-        screenUp = Camera.main.ViewportToScreenPoint(new Vector3(0f, .5f, 0f)); // const
+        boatLocator.SetActive(false);
+        
+        
     }
 
     private void Update()
@@ -68,10 +61,10 @@ public class CameraController : MonoBehaviour
             this.transform.position = playerBoat.transform.position;
         }
 
-        LocateBoat();
+        UpdateLocator(boatLocator, playerBoat);
     }
 
-    private void LocateBoat()
+    private void UpdateLocator(GameObject locator, GameObject target)
     {
         // test locator flip fix
         /*
@@ -85,24 +78,24 @@ public class CameraController : MonoBehaviour
         }
         */
 
-        Vector3 boatViewportPosition = Camera.main.WorldToViewportPoint(playerBoat.transform.position);
-        Vector3 boatScreenPosition = Camera.main.WorldToScreenPoint(playerBoat.transform.position);
-        // placeholder - not 100% accurate
-        newBoatLocatorViewportPosition.x = Mathf.Min(1f, Mathf.Max(0f, boatViewportPosition.x));
-        newBoatLocatorViewportPosition.y = Mathf.Min(1f, Mathf.Max(0f, boatViewportPosition.y));
-        boatLocator.transform.position = Camera.main.ViewportToScreenPoint(newBoatLocatorViewportPosition);
+        Vector3 boatViewportPosition = Camera.main.WorldToViewportPoint(target.transform.position);
+        Vector3 newLocatorViewportPosition = new Vector3
+        (
+            newLocatorViewportPosition.x = Mathf.Min(1f, Mathf.Max(0f, boatViewportPosition.x)),
+            newLocatorViewportPosition.y = Mathf.Min(1f, Mathf.Max(0f, boatViewportPosition.y)),
+            0f
+        );
+        locator.transform.position = Camera.main.ViewportToScreenPoint(newLocatorViewportPosition);
 
         if (boatViewportPosition.x <= 0f || boatViewportPosition.x >= 1f || boatViewportPosition.y <= 0f || boatViewportPosition.y >= 1f)
         {
-            boatLocatorImage.enabled = true;
-            boatLocator.transform.rotation = Quaternion.Euler(0f, 0f, (Vector3.Angle(screenUp, boatScreenPosition - screenCenter)) * (boatViewportPosition.x > .5f ? -1 : 1));
+            if (!locator.activeSelf) locator.SetActive(true);
+            Vector3 screenCenter = Camera.main.ViewportToScreenPoint(new Vector3(.5f, .5f, 0f));
+            Vector3 screenUp = Camera.main.ViewportToScreenPoint(new Vector3(0f, .5f, 0f));
+            Vector3 boatScreenPosition = Camera.main.WorldToScreenPoint(target.transform.position);
+            locator.transform.rotation = Quaternion.Euler(0f, 0f, (Vector3.Angle(screenUp, boatScreenPosition - screenCenter)) * (boatViewportPosition.x > .5f ? -1 : 1));
+            return;
         }
-        else
-        {
-            boatLocatorImage.enabled = false;
-        }
-
-        Debug.DrawLine(screenCenter, boatScreenPosition);
-        Debug.DrawLine(playerBoat.transform.position, boatScreenPosition);
+        if (locator.activeSelf) locator.SetActive(false);
     }
 }

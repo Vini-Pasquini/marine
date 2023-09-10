@@ -47,13 +47,17 @@ public class BoatController : MonoBehaviour
         MovePlayerBoat();
     }
 
+    private float boatSlowdownThreshold = 3f;
+    private float boatStopThreshold = .5f;
+
     private void MovePlayerBoat()
     {
-        float speedMultiplier = Mathf.Min(movementDirection.magnitude, 1f);
-        if (movementDirection.magnitude <= .5f) speedMultiplier = 0f;
+        float speedMultiplier = movementDirection.magnitude <= boatStopThreshold ? 0f : Mathf.Min(movementDirection.magnitude, boatSlowdownThreshold) / boatSlowdownThreshold;
         float currentAngle = Vector3.Angle(this.transform.forward, movementDirection);
         Vector3 currentVelocity = this.transform.forward * (boatSpeed * (currentAngle >= 90 ? .3f : (currentAngle >= 45 ? .6f : 1f)));
-        if (currentAngle > 5f && speedMultiplier > 0f) this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(movementDirection), Time.deltaTime * rotationSpeed);
+        
+        if (currentAngle > 5f && movementDirection.magnitude > boatStopThreshold) this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(movementDirection), Time.deltaTime * rotationSpeed);
+
         playerBody.velocity = currentVelocity * speedMultiplier;
     }
 }

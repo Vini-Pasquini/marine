@@ -28,7 +28,7 @@ public class BoatController : MonoBehaviour
         if (Input.GetKey(KeyCode.Mouse1))
         {
             RaycastHit hitInfo;
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo) && hitInfo.collider.CompareTag("Water"))
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, 1 << 4))
             {
                 clickPosition = hitInfo.point;
                 clickMarker.transform.position = clickPosition;

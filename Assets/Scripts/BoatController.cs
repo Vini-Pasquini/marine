@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -15,8 +16,12 @@ public class BoatController : MonoBehaviour
     [SerializeField] private GameObject clickMarker;
     private MeshRenderer clickMarkerRenderer;
 
+    RaycastHit clickHitInfo;
+    RaycastHit[] barrierHitInfo;
+
     private void Start()
     {
+        barrierHitInfo = new RaycastHit[8];
         playerBody = this.GetComponent<Rigidbody>();
         movementDirection = Vector3.zero;
         clickPosition = Vector3.zero;
@@ -27,10 +32,9 @@ public class BoatController : MonoBehaviour
     {
         if (Input.GetKey(KeyCode.Mouse1))
         {
-            RaycastHit hitInfo;
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, 1 << 4))
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out clickHitInfo, Mathf.Infinity, 1 << 4))
             {
-                clickPosition = hitInfo.point;
+                clickPosition = clickHitInfo.point;
                 clickMarker.transform.position = clickPosition;
                 if (!clickMarkerRenderer.enabled) clickMarkerRenderer.enabled = true;
             }
@@ -40,6 +44,50 @@ public class BoatController : MonoBehaviour
         if (clickMarkerRenderer.enabled && playerBody.velocity.magnitude == 0f) clickMarkerRenderer.enabled = false;
 
         movementDirection = (clickPosition - this.transform.position);
+
+        AvoidBarrier();
+
+        Debug.DrawLine(this.transform.position, this.transform.position + movementDirection);
+    }
+
+    private float boatBarrierRange = 5f;
+
+    private void AvoidBarrier()
+    {
+        bool barrierHitFlag = false;
+        Ray[] rayList =
+        {
+            new Ray(this.transform.position, -this.transform.right),
+            new Ray(this.transform.position, -this.transform.right + this.transform.forward),
+            new Ray(this.transform.position, this.transform.forward),
+            new Ray(this.transform.position, this.transform.right + this.transform.forward),
+            new Ray(this.transform.position, this.transform.right),
+            new Ray(this.transform.position, this.transform.right - this.transform.forward),
+            new Ray(this.transform.position, - this.transform.forward),
+            new Ray(this.transform.position, - this.transform.right - this.transform.forward),
+        };
+
+        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.right).normalized * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.right + this.transform.forward).normalized * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.forward).normalized * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.right + this.transform.forward).normalized * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.right).normalized * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.right - this.transform.forward).normalized * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.forward).normalized * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.right - this.transform.forward).normalized * boatBarrierRange);
+
+        for (int index = 0; index < 8; index++)
+        {
+            if (Physics.Raycast(rayList[index], out barrierHitInfo[index], boatBarrierRange, 1 << 6)) barrierHitFlag = true;
+        }
+
+        if (!barrierHitFlag) return;
+        
+        /*
+         *
+         * rotate boat to avoid barrier here
+         *
+         */
     }
 
     private void FixedUpdate()

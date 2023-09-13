@@ -28,8 +28,20 @@ public class BoatController : MonoBehaviour
         clickMarkerRenderer = clickMarker.GetComponent<MeshRenderer>();
     }
 
+    [SerializeField] LevelDisplayController levelDisplayController;
+
     private void Update()
     {
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Core.SetPlayerFuel(1);
+            Core.SetPlayerHealth(2);
+            Core.SetPlayerGold(3);
+            levelDisplayController.UpdateFuelDisplay();
+            levelDisplayController.UpdateHealthDisplay();
+            levelDisplayController.UpdateGoldDisplay();
+        }
+
         if (Input.GetKey(KeyCode.Mouse1))
         {
             if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out clickHitInfo, Mathf.Infinity, 1 << 4))
@@ -45,7 +57,7 @@ public class BoatController : MonoBehaviour
 
         movementDirection = (clickPosition - this.transform.position);
 
-        AvoidBarrier();
+        //AvoidBarrier();
 
         Debug.DrawLine(this.transform.position, this.transform.position + movementDirection);
     }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static TMPro.TMP_Compatibility;
 using UnityEngine.UI;
+using System.Linq;
 
 public class CameraController : MonoBehaviour
 {
@@ -25,12 +26,20 @@ public class CameraController : MonoBehaviour
         
     }
 
+    RaycastHit hitInfo;
+    GameObject hoveredObject;
+    GameObject cashedHoverdObject;
+
+    [SerializeField] private GameObject interactionMenu;
+
     private void Update()
     {
         if (Input.GetKeyDown(KeyCode.F))
         {
             lockOnPlayer = !lockOnPlayer;
         }
+
+        EnemyHighlight(); // placeholder
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -40,6 +49,8 @@ public class CameraController : MonoBehaviour
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
+            interactionMenu.transform.position = Input.mousePosition;
+            interactionMenu.SetActive(hoveredObject != null);
             movingCamera = false;
             anchorPosition.y = 0f;
         }
@@ -62,6 +73,23 @@ public class CameraController : MonoBehaviour
         }
 
         UpdateLocator(boatLocator, playerBoat);
+    }
+
+    // placeholder
+    private void EnemyHighlight()
+    {
+        hoveredObject = null;
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, 1 << (int)LAYERS.Enemy))
+        {
+            hoveredObject = hitInfo.transform.gameObject;
+        }
+        if (hoveredObject == null)
+        {
+            if (cashedHoverdObject != null) cashedHoverdObject.GetComponent<MeshRenderer>().enabled = false;
+            return;
+        }
+        cashedHoverdObject = hoveredObject;
+        cashedHoverdObject.GetComponent<MeshRenderer>().enabled = true;
     }
 
     private void UpdateLocator(GameObject locator, GameObject target)

@@ -44,7 +44,7 @@ public class BoatController : MonoBehaviour
 
         if (Input.GetKey(KeyCode.Mouse1))
         {
-            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out clickHitInfo, Mathf.Infinity, 1 << 4))
+            if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out clickHitInfo, Mathf.Infinity, 1 << (int)LAYERS.Water))
             {
                 clickPosition = clickHitInfo.point;
                 clickMarker.transform.position = clickPosition;
@@ -90,7 +90,7 @@ public class BoatController : MonoBehaviour
 
         for (int index = 0; index < 8; index++)
         {
-            if (Physics.Raycast(rayList[index], out barrierHitInfo[index], boatBarrierRange, 1 << 6)) barrierHitFlag = true;
+            if (Physics.Raycast(rayList[index], out barrierHitInfo[index], boatBarrierRange, 1 << (int)LAYERS.Barrier)) barrierHitFlag = true;
         }
 
         if (!barrierHitFlag) return;

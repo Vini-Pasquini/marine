@@ -32,8 +32,17 @@ public class CameraController : MonoBehaviour
 
     [SerializeField] private GameObject interactionMenu;
 
+    private float scrollSpeed = 1000f; // placeholder
+    private float minCameraDistance = 10f; // placeholder
+    private float maxCameraDistance = 100f; // placeholder
+
     private void Update()
     {
+        float cameraRigScale = this.transform.localScale.x;
+        float cameraRigScrollDelta = (Input.mouseScrollDelta.y * Time.deltaTime) * scrollSpeed;
+        cameraRigScale = Mathf.Max(minCameraDistance, Mathf.Min(maxCameraDistance, cameraRigScale - cameraRigScrollDelta));
+        this.transform.localScale = Vector3.one * cameraRigScale;
+
         if (Input.GetKeyDown(KeyCode.F))
         {
             lockOnPlayer = !lockOnPlayer;

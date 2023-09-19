@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,30 +6,53 @@ using UnityEngine.SceneManagement;
 
 public class MenuController : MonoBehaviour
 {
+    private Scene currentScene;
+
     private void Awake()
     {
-        AwakeMenu();
+        if (SceneManager.GetActiveScene().name == "MainMenu") // game initialization check
+        {
+            Screen.SetResolution(1600, 900, false);
+            Core.Reset();
+        }
     }
 
-    private bool AwakeMenu()
+    private void Start()
     {
-        if (SceneManager.GetActiveScene().name != "MainMenu") return false;
-        Screen.SetResolution(1600, 900, false);
-        Core.Reset();
-        return true;
+        currentScene = SceneManager.GetActiveScene();
     }
 
-    // need to check if is comming from LevelMap or BattleScene... skip if BattleScene
-    private bool StartNewLevel(string levelScene)
+    private bool CacheLevelInfo()
     {
-        if (SceneManager.GetActiveScene().name != "LevelMap" || levelScene != "TestLevel") return false; // placeholder
-        Core.Reset();
+        Core.SetPlayerTransform(GameObject.Find("PlayerBoat").transform);
         return true;
     }
 
     public void OnChangeSceneButtonPress(string newScene)
     {
-        StartNewLevel(newScene);
+        if (currentScene.name == "LevelMap" || newScene.StartsWith("Level_")) Core.Reset(); // new level check
+        if (newScene == "BattleScene") this.CacheLevelInfo();
+        Core.SetLastActiveScene(currentScene.name);
         SceneManager.LoadScene(newScene);
+    }
+
+    private bool LoadCachedLevel() // placeholder test
+    {
+        GameObject playerBoat = GameObject.Find("PLayerBoat");
+        if (playerBoat != null) return false;
+        Transform cachedTransform = Core.GetPlayerTransform();
+        playerBoat.transform.position = cachedTransform.position;
+        playerBoat.transform.rotation = cachedTransform.rotation;
+        return true;
+    }
+
+    public void OnBackButtonPress()
+    {
+        string nextScene = Core.GetLastActiveScene();
+        Core.SetLastActiveScene(currentScene.name);
+
+        if (nextScene.StartsWith("Level_") && currentScene.name == "BattleScene") Core.SetPlayerTransformLoadStaged(true);
+
+        SceneManager.LoadScene(nextScene);
     }
 }

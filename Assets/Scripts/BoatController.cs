@@ -24,6 +24,12 @@ public class BoatController : MonoBehaviour
 
     private void Start()
     {
+        if(Core.GetPlayerTransformLoadStaged())
+        {
+            Transform cachedTransform = Core.GetPlayerTransform();
+            this.transform.position = cachedTransform.position;
+            this.transform.rotation = cachedTransform.rotation;
+        }
         barrierHitInfo = new RaycastHit[8];
         playerBody = this.GetComponent<Rigidbody>();
         movementDirection = Vector3.zero;

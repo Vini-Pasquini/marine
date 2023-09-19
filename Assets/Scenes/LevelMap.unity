@@ -458,7 +458,7 @@ GameObject:
   - component: {fileID: 928903256}
   - component: {fileID: 928903255}
   m_Layer: 5
-  m_Name: LevelButton
+  m_Name: Level_0 Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -538,7 +538,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: TestLevel
+          m_StringArgument: Level_0
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &928903256

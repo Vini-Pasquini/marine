@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class Core
 {
+    // levelState
     private static float playerFuel = 0f;
     public static float GetPlayerFuel() { return playerFuel; }
     public static void SetPlayerFuel(float newValue) { playerFuel = newValue; }
@@ -19,10 +20,25 @@ public static class Core
     public static void SetPlayerGold(float newValue) { playerGold = newValue; }
     public static void IncrementPlayerGold(float increment) { playerGold += increment; }
 
+    private static Transform playerTransform = null;
+    public static Transform GetPlayerTransform() { return playerTransform; }
+    public static void SetPlayerTransform(Transform transform) { playerTransform = transform; }
+
+    // flags
+    private static bool playerTransformLoadStaged = false;
+    public static bool GetPlayerTransformLoadStaged() { return playerTransformLoadStaged; }
+    public static void SetPlayerTransformLoadStaged(bool newValue) { playerTransformLoadStaged = newValue; }
+
+    // gameState
+    private static string lastActiveSceneName = null;
+    public static string GetLastActiveScene() { return lastActiveSceneName; }
+    public static void SetLastActiveScene(string sceneName) { lastActiveSceneName = sceneName; }
+
     public static void Reset()
     {
         playerFuel = 100f;
         playerHealth = 100f;
         playerGold = 0f;
+        playerTransform = null;
     }
 }

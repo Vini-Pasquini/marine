@@ -21,9 +21,7 @@ public class CameraController : MonoBehaviour
     {
         lockOnPlayer = true;
         clickPosition = Vector3.zero;
-        boatLocator.SetActive(false);
-        
-        
+        boatLocator.SetActive(false);   
     }
 
     RaycastHit hitInfo;
@@ -63,6 +61,8 @@ public class CameraController : MonoBehaviour
             movingCamera = false;
             anchorPosition.y = 0f;
         }
+
+        cameraSpeed = cameraRigScale/1500f;
 
         if (!lockOnPlayer)
         {

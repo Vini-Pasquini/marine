@@ -29,6 +29,14 @@ public class BoatController : MonoBehaviour
         movementDirection = Vector3.zero;
         clickPosition = Vector3.zero;
         clickMarkerRenderer = clickMarker.GetComponent<MeshRenderer>();
+        UpdateDisplays();
+    }
+
+    private void UpdateDisplays()
+    {
+        levelDisplayController.UpdateFuelDisplay();
+        levelDisplayController.UpdateHealthDisplay();
+        levelDisplayController.UpdateGoldDisplay();
     }
 
     private void Update()
@@ -37,12 +45,7 @@ public class BoatController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.H))
         {
-            Core.SetPlayerFuel(1);
-            Core.SetPlayerHealth(2);
-            Core.SetPlayerGold(3);
-            levelDisplayController.UpdateFuelDisplay();
-            levelDisplayController.UpdateHealthDisplay();
-            levelDisplayController.UpdateGoldDisplay();
+            Core.SetPlayerGold(10);
         }
 
         if (!avoidBarrier && Input.GetKey(KeyCode.Mouse1))
@@ -68,15 +71,23 @@ public class BoatController : MonoBehaviour
 
         AvoidBarrier();
 
+        UpdateDisplays();
+
         // debug stuff
 
         DebugDrawBarrierCollisionRays();
         Debug.DrawLine(this.transform.position, this.transform.position + movementDirection);
     }
 
+    private float fuelUseRate = .005f;
+
     private void FixedUpdate()
     {
         MovePlayerBoat();
+        if(playerBody.velocity.magnitude != 0f)
+        {
+            Core.IncrementPlayerFuel(-playerBody.velocity.magnitude * fuelUseRate);
+        }
     }
 
     private void AvoidBarrier()

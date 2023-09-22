@@ -24,7 +24,9 @@ public class MenuController : MonoBehaviour
 
     private bool CacheLevelInfo()
     {
-        Core.SetPlayerTransform(GameObject.Find("PlayerBoat").transform);
+        Transform playerTransform = GameObject.Find("PlayerBoat").transform;
+        Core.SetPlayerPosition(playerTransform.position);
+        Core.SetPlayerRotation(playerTransform.rotation);
         return true;
     }
 
@@ -36,22 +38,12 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene(newScene);
     }
 
-    private bool LoadCachedLevel() // placeholder test
-    {
-        GameObject playerBoat = GameObject.Find("PLayerBoat");
-        if (playerBoat != null) return false;
-        Transform cachedTransform = Core.GetPlayerTransform();
-        playerBoat.transform.position = cachedTransform.position;
-        playerBoat.transform.rotation = cachedTransform.rotation;
-        return true;
-    }
-
     public void OnBackButtonPress()
     {
         string nextScene = Core.GetLastActiveScene();
         Core.SetLastActiveScene(currentScene.name);
 
-        if (nextScene.StartsWith("Level_") && currentScene.name == "BattleScene") Core.SetPlayerTransformLoadStaged(true);
+        if (nextScene.StartsWith("Level_") && currentScene.name == "BattleScene") Core.SetPlayerLoadStaged(true);
 
         SceneManager.LoadScene(nextScene);
     }

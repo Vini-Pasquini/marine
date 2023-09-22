@@ -20,14 +20,18 @@ public static class Core
     public static void SetPlayerGold(float newValue) { playerGold = newValue; }
     public static void IncrementPlayerGold(float increment) { playerGold += increment; }
 
-    private static Transform playerTransform = null;
-    public static Transform GetPlayerTransform() { return playerTransform; }
-    public static void SetPlayerTransform(Transform transform) { playerTransform = transform; }
+    private static Vector3 playerPosition = Vector3.zero;
+    public static Vector3 GetPlayerPosition() { return playerPosition; }
+    public static void SetPlayerPosition(Vector3 position) { playerPosition = position; }
+
+    private static Quaternion playerRotation = Quaternion.identity;
+    public static Quaternion GetPlayerRotation() { return playerRotation; }
+    public static void SetPlayerRotation(Quaternion rotation) { playerRotation = rotation; }
 
     // flags
-    private static bool playerTransformLoadStaged = false;
-    public static bool GetPlayerTransformLoadStaged() { return playerTransformLoadStaged; }
-    public static void SetPlayerTransformLoadStaged(bool newValue) { playerTransformLoadStaged = newValue; }
+    private static bool playerLoadStaged = false;
+    public static bool GetPlayerLoadStaged() { return playerLoadStaged; }
+    public static void SetPlayerLoadStaged(bool newValue) { playerLoadStaged = newValue; }
 
     // gameState
     private static string lastActiveSceneName = null;
@@ -39,6 +43,7 @@ public static class Core
         playerFuel = 100f;
         playerHealth = 100f;
         playerGold = 0f;
-        playerTransform = null;
+        playerPosition = Vector3.zero;
+        playerRotation = Quaternion.identity;
     }
 }

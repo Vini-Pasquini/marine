@@ -24,25 +24,13 @@ public class BoatController : MonoBehaviour
 
     private void Start()
     {
-        if(Core.GetPlayerTransformLoadStaged())
-        {
-            Transform cachedTransform = Core.GetPlayerTransform();
-            this.transform.position = cachedTransform.position;
-            this.transform.rotation = cachedTransform.rotation;
-        }
         barrierHitInfo = new RaycastHit[8];
         playerBody = this.GetComponent<Rigidbody>();
         movementDirection = Vector3.zero;
         clickPosition = Vector3.zero;
         clickMarkerRenderer = clickMarker.GetComponent<MeshRenderer>();
         UpdateDisplays();
-    }
-
-    private void UpdateDisplays()
-    {
-        levelDisplayController.UpdateFuelDisplay();
-        levelDisplayController.UpdateHealthDisplay();
-        levelDisplayController.UpdateGoldDisplay();
+        LoadCachedPlayer();
     }
 
     private void Update()
@@ -137,6 +125,22 @@ public class BoatController : MonoBehaviour
         if (currentAngle > 5f && movementDirection.magnitude > boatStopThreshold) this.transform.rotation = Quaternion.Slerp(this.transform.rotation, Quaternion.LookRotation(movementDirection), Time.deltaTime * rotationSpeed);
 
         playerBody.velocity = currentVelocity * speedMultiplier;
+    }
+
+    private bool LoadCachedPlayer()
+    {
+        if (!Core.GetPlayerLoadStaged()) return false;
+        this.transform.position = Core.GetPlayerPosition();
+        clickPosition = this.transform.position;
+        this.transform.rotation = Core.GetPlayerRotation();
+        return true;
+    }
+
+    private void UpdateDisplays()
+    {
+        levelDisplayController.UpdateFuelDisplay();
+        levelDisplayController.UpdateHealthDisplay();
+        levelDisplayController.UpdateGoldDisplay();
     }
 
     /* Debug Methods */

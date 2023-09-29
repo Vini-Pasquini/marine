@@ -4,42 +4,69 @@ using System.Collections.Generic;
 using System.Reflection;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class BoatController : MonoBehaviour
 {
-    [SerializeField] private LevelDisplayController levelDisplayController;
-    [SerializeField] private GameObject clickMarker;
+    // Player Movement Constants
+    private const float rotationSpeed = 2.5f;
+    private const float boatSpeed = 5f;
+    private const float fuelUseRate = .005f;
+    private const float boatSlowdownThreshold = 3f;
+    private const float boatStopThreshold = .5f;
+    // Basic Player Movement
     private Rigidbody playerBody;
     private Vector3 movementDirection;
-    private Vector3 clickPosition;
+    // Click Marker
+    private GameObject clickMarker;
     private MeshRenderer clickMarkerRenderer;
     private RaycastHit clickHitInfo;
+    private Vector3 clickPosition;
+    // Barrier
+    private Ray[] barrierRayList;
     private RaycastHit[] barrierHitInfo;
-    private float boatSpeed = 5f;
-    private float rotationSpeed = 2.5f;
-    private float boatSlowdownThreshold = 3f;
-    private float boatStopThreshold = .5f;
     private float boatBarrierRange = 5f;
     private bool avoidBarrier = false;
+    // GUI
+    private LevelDisplayController levelDisplayController;
+    [SerializeField] private GameObject levelOverOverlay;
 
     private void Start()
     {
-        barrierHitInfo = new RaycastHit[8];
+        // barrier init
+        barrierRayList = new Ray[(int)BOAT_DIRECTION._COUNT];
+        barrierHitInfo = new RaycastHit[(int)BOAT_DIRECTION._COUNT];
+        // click marker init
+        clickMarker = GameObject.Find("ClickMarker");
+        clickMarkerRenderer = clickMarker.GetComponent<MeshRenderer>();
+        clickPosition = Vector3.zero;
+        // player init
         playerBody = this.GetComponent<Rigidbody>();
         movementDirection = Vector3.zero;
-        clickPosition = Vector3.zero;
-        clickMarkerRenderer = clickMarker.GetComponent<MeshRenderer>();
-        UpdateDisplays();
         LoadCachedPlayer();
+        // gui init
+        levelDisplayController = GameObject.Find("Canvas").GetComponent<LevelDisplayController>();
+        UpdateDisplays();
+    }
+
+    private void EndLevel(LEVEL_STATE endState, Color screenColor)
+    {
+        levelOverOverlay.GetComponent<Image>().color = screenColor;
+        levelOverOverlay.SetActive(true);
+        Core.SetLevelState(endState);
+        playerBody.velocity = Vector3.zero;
+        clickMarkerRenderer.enabled = false;
     }
 
     private void Update()
     {
+        if (Core.GetLevelState() != LEVEL_STATE.Ongoing) return;
+        
         // player input
 
-        if (Input.GetKeyDown(KeyCode.H))
+        if (Input.GetKeyDown(KeyCode.H)) // debug
         {
-            Core.SetPlayerGold(10);
+            this.EndLevel(LEVEL_STATE.Success, new Color(0f, 1f, 0f, .5f));
         }
 
         if (!avoidBarrier && Input.GetKey(KeyCode.Mouse1))
@@ -67,18 +94,30 @@ public class BoatController : MonoBehaviour
 
         UpdateDisplays();
 
+        // level loss check (placeholder)
+
+        float currentFuel = Core.GetPlayerFuel();
+        float currentHealth = Core.GetPlayerHealth();
+        if (currentFuel <= 0f || currentHealth <= 0f)
+        {
+            LEVEL_STATE endState = (currentFuel <= 0f && currentHealth > 0f ? LEVEL_STATE.FuelFail : (currentHealth <= 0f && currentFuel > 0f ? LEVEL_STATE.HealthFail : LEVEL_STATE.Stopped));
+            Color screenColor = (currentFuel <= 0f && currentHealth > 0f ? new Color(1f, 1f, 0f, .5f) : (currentHealth <= 0f && currentFuel > 0f ? new Color(1f, 0f, 0f, .5f) : new Color(0f, 1f, 1f, .5f)));
+            this.EndLevel(endState, screenColor);
+            levelOverOverlay.SetActive(true);
+        }
+
         // debug stuff
 
         DebugDrawBarrierCollisionRays();
         Debug.DrawLine(this.transform.position, this.transform.position + movementDirection);
     }
 
-    private float fuelUseRate = .005f;
-
     private void FixedUpdate()
     {
+        if (Core.GetLevelState() != LEVEL_STATE.Ongoing) return;
+
         MovePlayerBoat();
-        if(playerBody.velocity.magnitude != 0f)
+        if (playerBody.velocity.magnitude != 0f)
         {
             Core.IncrementPlayerFuel(-playerBody.velocity.magnitude * fuelUseRate);
         }
@@ -87,22 +126,19 @@ public class BoatController : MonoBehaviour
     private void AvoidBarrier()
     {
         bool barrierHitFlag = false;
-        Ray[] rayList =
-        {
-            new Ray(this.transform.position, -this.transform.right),
-            new Ray(this.transform.position, -this.transform.right + this.transform.forward),
-            new Ray(this.transform.position, this.transform.forward),
-            new Ray(this.transform.position, this.transform.right + this.transform.forward),
-            new Ray(this.transform.position, this.transform.right),
-            new Ray(this.transform.position, this.transform.right - this.transform.forward),
-            new Ray(this.transform.position, - this.transform.forward),
-            new Ray(this.transform.position, - this.transform.right - this.transform.forward),
-        };
+        barrierRayList[(int)BOAT_DIRECTION.Port] = new Ray(this.transform.position, -this.transform.right);
+        barrierRayList[(int)BOAT_DIRECTION.Port_Bow] = new Ray(this.transform.position, -this.transform.right + this.transform.forward);
+        barrierRayList[(int)BOAT_DIRECTION.Bow] = new Ray(this.transform.position, this.transform.forward);
+        barrierRayList[(int)BOAT_DIRECTION.Starboard_Bow] = new Ray(this.transform.position, this.transform.right + this.transform.forward);
+        barrierRayList[(int)BOAT_DIRECTION.Starboard] = new Ray(this.transform.position, this.transform.right);
+        barrierRayList[(int)BOAT_DIRECTION.Starboard_Stern] = new Ray(this.transform.position, this.transform.right - this.transform.forward);
+        barrierRayList[(int)BOAT_DIRECTION.Stern] = new Ray(this.transform.position, - this.transform.forward);
+        barrierRayList[(int)BOAT_DIRECTION.Port_Stern] = new Ray(this.transform.position, - this.transform.right - this.transform.forward);
 
         int hitIndex = 0;
-        for (int index = 0; index < 8; index++)
+        for (int index = 0; index < (int)BOAT_DIRECTION._COUNT; index++)
         {
-            if (!avoidBarrier && Physics.Raycast(rayList[index], out barrierHitInfo[index], boatBarrierRange, 1 << (int)LAYERS.Barrier))
+            if (!avoidBarrier && Physics.Raycast(barrierRayList[index], out barrierHitInfo[index], boatBarrierRange, 1 << (int)LAYERS.Barrier))
             {
                 barrierHitFlag = true;
                 avoidBarrier = true;
@@ -112,7 +148,7 @@ public class BoatController : MonoBehaviour
 
         if (!barrierHitFlag) return;
 
-        clickPosition = this.transform.position - rayList[hitIndex].direction * boatBarrierRange;
+        clickPosition = this.transform.position - barrierRayList[hitIndex].direction * boatBarrierRange;
         clickMarkerRenderer.enabled = true;
     }
 
@@ -129,7 +165,8 @@ public class BoatController : MonoBehaviour
 
     private bool LoadCachedPlayer()
     {
-        if (!Core.GetPlayerLoadStaged()) return false;
+        Core.IncrementPlayerHealth(-40); // debug
+        if (!Core.IsPlayerLoadStaged()) return false;
         this.transform.position = Core.GetPlayerPosition();
         clickPosition = this.transform.position;
         this.transform.rotation = Core.GetPlayerRotation();

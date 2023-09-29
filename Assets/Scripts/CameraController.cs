@@ -34,8 +34,12 @@ public class CameraController : MonoBehaviour
     private float minCameraDistance = 10f; // placeholder
     private float maxCameraDistance = 100f; // placeholder
 
+    private float interactionDistance = 10f;
+
     private void Update()
     {
+        if (Core.GetLevelState() != LEVEL_STATE.Ongoing) return;
+
         float cameraRigScale = this.transform.localScale.x;
         float cameraRigScrollDelta = (Input.mouseScrollDelta.y * Time.deltaTime) * scrollSpeed;
         cameraRigScale = Mathf.Max(minCameraDistance, Mathf.Min(maxCameraDistance, cameraRigScale - cameraRigScrollDelta));
@@ -50,16 +54,19 @@ public class CameraController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
+            // camera control
             movingCamera = true;
             clickPosition = Input.mousePosition;
             anchorPosition = this.transform.position;
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
-            interactionMenu.transform.position = Input.mousePosition;
-            interactionMenu.SetActive(hoveredObject != null);
+            // camera control
             movingCamera = false;
             anchorPosition.y = 0f;
+            // object interaction
+            interactionMenu.transform.position = Input.mousePosition;
+            interactionMenu.SetActive(hoveredObject != null && (hoveredObject.transform.position - playerBoat.transform.position).magnitude <= interactionDistance);
         }
 
         cameraSpeed = cameraRigScale/1500f;

@@ -32,7 +32,12 @@ public class MenuController : MonoBehaviour
 
     public void OnChangeSceneButtonPress(string newScene)
     {
-        if (currentScene.name == "LevelMap" || newScene.StartsWith("Level_")) Core.Reset(); // new level check
+        if (currentScene.name == "LevelMap")
+        {
+            Core.SetLevelState(LEVEL_STATE.Stopped);
+            // new level check
+            if (newScene.StartsWith("Level_")) Core.Reset(levelStateOverride: LEVEL_STATE.Ongoing);
+        }
         if (newScene == "BattleScene") this.CacheLevelInfo();
         Core.SetLastActiveScene(currentScene.name);
         SceneManager.LoadScene(newScene);
@@ -43,7 +48,8 @@ public class MenuController : MonoBehaviour
         string nextScene = Core.GetLastActiveScene();
         Core.SetLastActiveScene(currentScene.name);
 
-        if (nextScene.StartsWith("Level_") && currentScene.name == "BattleScene") Core.SetPlayerLoadStaged(true);
+        if (nextScene.StartsWith("Level_") && currentScene.name == "BattleScene") Core.StagePlayerLoad(true); // back to level check
+        if (nextScene.StartsWith("LevelMap")) Core.SetLevelState(LEVEL_STATE.Stopped);
 
         SceneManager.LoadScene(nextScene);
     }

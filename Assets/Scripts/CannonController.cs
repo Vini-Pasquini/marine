@@ -4,11 +4,15 @@ using UnityEngine;
 
 public class CannonController : MonoBehaviour
 {
-    public float rotationSpeed = 1;
-    public float BlastPower = 5;
+    public float rotationSpeed = 0.8f;
+    public float BlastPower = 4;
 
     public GameObject CannonBall;
     public Transform ShotPoint;
+
+    public float timer = 0.0f;
+
+    public bool canShoot = true;
 
 
     private void Update()
@@ -19,12 +23,29 @@ public class CannonController : MonoBehaviour
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
             new Vector3(0, HorizontalRotation * rotationSpeed, VerticalRotation * rotationSpeed));
 
-        if(Input.GetKeyDown(KeyCode.Space))
-        {
-            GameObject CreateCannonBall = Instantiate(CannonBall, ShotPoint.position, ShotPoint.rotation);
-            CreateCannonBall.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
+        Shoot();
+    }
 
-            //Screenshake.ShakeAmount = 2;
+    private void Shoot()
+    {
+        if (canShoot)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                GameObject CreateCannonBall = Instantiate(CannonBall, ShotPoint.position, ShotPoint.rotation);
+                CreateCannonBall.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
+                Destroy(CreateCannonBall, 5);
+                canShoot = false;
+            }
+        }
+        else
+        {
+            timer += Time.deltaTime;
+            if (timer >= 2.5f)
+            {
+                timer = 0;
+                canShoot = true;
+            }
         }
     }
 }

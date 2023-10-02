@@ -15,15 +15,31 @@ public class CannonController : MonoBehaviour
     public bool canShoot = true;
 
 
+    public float yRotation;
+    public float ZRotation;
+
     private void Update()
     {
+        MoveHarpoon();
+        Shoot();
+    }
+
+    private void MoveHarpoon()
+    {
+        yRotation = gameObject.transform.rotation.y;
+
         float HorizontalRotation = Input.GetAxis("Horizontal");
         float VerticalRotation = Input.GetAxis("Vertical");
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
             new Vector3(0, HorizontalRotation * rotationSpeed, VerticalRotation * rotationSpeed));
 
-        Shoot();
+        if(yRotation >= 180.0f)
+        {
+            Debug.Log("Passou");
+            yRotation = 180.0f;
+        }
+
     }
 
     private void Shoot()

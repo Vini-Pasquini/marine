@@ -20,6 +20,7 @@ public class BoatController : MonoBehaviour
     // Click Marker
     private GameObject clickMarker;
     private MeshRenderer clickMarkerRenderer;
+    private LineRenderer clickMarkerLine;
     private RaycastHit clickHitInfo;
     private Vector3 clickPosition;
     // Barrier
@@ -39,6 +40,7 @@ public class BoatController : MonoBehaviour
         // click marker init
         clickMarker = GameObject.Find("ClickMarker");
         clickMarkerRenderer = clickMarker.GetComponent<MeshRenderer>();
+        clickMarkerLine = clickMarker.GetComponent<LineRenderer>();
         clickPosition = Vector3.zero;
         // player init
         playerBody = this.GetComponent<Rigidbody>();
@@ -56,6 +58,7 @@ public class BoatController : MonoBehaviour
         Core.SetLevelState(endState);
         playerBody.velocity = Vector3.zero;
         clickMarkerRenderer.enabled = false;
+        clickMarkerLine.enabled = false;
     }
 
     private void Update()
@@ -75,6 +78,7 @@ public class BoatController : MonoBehaviour
             {
                 clickPosition = clickHitInfo.point;
                 if (!clickMarkerRenderer.enabled) clickMarkerRenderer.enabled = true;
+                if (!clickMarkerLine.enabled) clickMarkerLine.enabled = true;
             }
         }
 
@@ -85,6 +89,7 @@ public class BoatController : MonoBehaviour
         if (clickMarkerRenderer.enabled && playerBody.velocity.magnitude == 0f)
         {
             clickMarkerRenderer.enabled = false;
+            clickMarkerLine.enabled = false;
             avoidBarrier = false;
         }
 
@@ -105,6 +110,21 @@ public class BoatController : MonoBehaviour
             this.EndLevel(endState, screenColor);
             levelOverOverlay.SetActive(true);
         }
+
+        // click marker line renderer
+
+        /*
+        int segmentSize = (int)((clickPosition - this.transform.position).magnitude / 10);
+        clickMarkerLine.positionCount = 2 + segmentSize;
+
+        for(int positionIndex = 1; positionIndex < clickMarkerLine.positionCount - 1; positionIndex++)
+        {
+            clickMarkerLine.SetPosition(positionIndex, this.transform.position + (clickPosition - this.transform.position).normalized * segmentSize * positionIndex);
+        }*/
+        
+        clickMarkerLine.SetPosition(0, this.transform.position);
+        clickMarkerLine.SetPosition(clickMarkerLine.positionCount - 1, clickPosition);
+
 
         // debug stuff
 
@@ -150,6 +170,7 @@ public class BoatController : MonoBehaviour
 
         clickPosition = this.transform.position - barrierRayList[hitIndex].direction * boatBarrierRange;
         clickMarkerRenderer.enabled = true;
+        clickMarkerLine.enabled = true;
     }
 
     private void MovePlayerBoat()

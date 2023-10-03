@@ -34,6 +34,8 @@ public class BoatController : MonoBehaviour
 
     private void Start()
     {
+        // spawn
+        Vector3 levelSpawnPosition = GameObject.Find("PlayerSpawn").transform.position;
         // barrier init
         barrierRayList = new Ray[(int)BOAT_DIRECTION._COUNT];
         barrierHitInfo = new RaycastHit[(int)BOAT_DIRECTION._COUNT];
@@ -41,10 +43,11 @@ public class BoatController : MonoBehaviour
         clickMarker = GameObject.Find("ClickMarker");
         clickMarkerRenderer = clickMarker.GetComponent<MeshRenderer>();
         clickMarkerLine = clickMarker.GetComponent<LineRenderer>();
-        clickPosition = Vector3.zero;
+        clickPosition = levelSpawnPosition;
         // player init
         playerBody = this.GetComponent<Rigidbody>();
         movementDirection = Vector3.zero;
+        this.transform.position = levelSpawnPosition;
         LoadCachedPlayer();
         // gui init
         levelDisplayController = GameObject.Find("Canvas").GetComponent<LevelDisplayController>();
@@ -112,19 +115,23 @@ public class BoatController : MonoBehaviour
         }
 
         // click marker line renderer
-
+        
         /*
-        int segmentSize = (int)((clickPosition - this.transform.position).magnitude / 10);
-        clickMarkerLine.positionCount = 2 + segmentSize;
+        int segmentAmount = 100;
+        int segmentMaxHeight = 20;
+        float segmentSize = (clickPosition - this.transform.position).magnitude / segmentAmount;
+        clickMarkerLine.positionCount = 1 + segmentAmount;
 
         for(int positionIndex = 1; positionIndex < clickMarkerLine.positionCount - 1; positionIndex++)
         {
-            clickMarkerLine.SetPosition(positionIndex, this.transform.position + (clickPosition - this.transform.position).normalized * segmentSize * positionIndex);
-        }*/
-        
+            Vector3 segmentPosition = this.transform.position + (clickPosition - this.transform.position).normalized * segmentSize * positionIndex;
+            segmentPosition.y = segmentPosition.y + (segmentMaxHeight * (1 - (Mathf.Abs(positionIndex - (segmentAmount / 2)) / (segmentAmount/2))));
+            clickMarkerLine.SetPosition(positionIndex, segmentPosition);
+        }
+        */
+
         clickMarkerLine.SetPosition(0, this.transform.position);
         clickMarkerLine.SetPosition(clickMarkerLine.positionCount - 1, clickPosition);
-
 
         // debug stuff
 
@@ -139,7 +146,7 @@ public class BoatController : MonoBehaviour
         MovePlayerBoat();
         if (playerBody.velocity.magnitude != 0f)
         {
-            Core.IncrementPlayerFuel(-playerBody.velocity.magnitude * fuelUseRate);
+            //Core.IncrementPlayerFuel(-playerBody.velocity.magnitude * fuelUseRate);
         }
     }
 

@@ -32,10 +32,12 @@ public class BoatController : MonoBehaviour
     private LevelDisplayController levelDisplayController;
     [SerializeField] private GameObject levelOverOverlay;
 
+    private GameObject playerSpawn;
+
     private void Start()
     {
         // spawn
-        Vector3 levelSpawnPosition = GameObject.Find("PlayerSpawn").transform.position;
+        playerSpawn = GameObject.Find("PlayerSpawn");
         // barrier init
         barrierRayList = new Ray[(int)BOAT_DIRECTION._COUNT];
         barrierHitInfo = new RaycastHit[(int)BOAT_DIRECTION._COUNT];
@@ -43,11 +45,9 @@ public class BoatController : MonoBehaviour
         clickMarker = GameObject.Find("ClickMarker");
         clickMarkerRenderer = clickMarker.GetComponent<MeshRenderer>();
         clickMarkerLine = clickMarker.GetComponent<LineRenderer>();
-        clickPosition = levelSpawnPosition;
         // player init
         playerBody = this.GetComponent<Rigidbody>();
         movementDirection = Vector3.zero;
-        this.transform.position = levelSpawnPosition;
         LoadCachedPlayer();
         // gui init
         levelDisplayController = GameObject.Find("Canvas").GetComponent<LevelDisplayController>();
@@ -194,11 +194,12 @@ public class BoatController : MonoBehaviour
     private bool LoadCachedPlayer()
     {
         Core.IncrementPlayerHealth(-40); // debug
-        if (!Core.IsPlayerLoadStaged()) return false;
-        this.transform.position = Core.GetPlayerPosition();
+        bool cacheFlag = Core.IsPlayerLoadStaged();
+        this.transform.position = cacheFlag ? Core.GetPlayerPosition() : playerSpawn.transform.position;
         clickPosition = this.transform.position;
-        this.transform.rotation = Core.GetPlayerRotation();
-        return true;
+        this.transform.rotation = cacheFlag ? Core.GetPlayerRotation() : playerSpawn.transform.rotation;
+        Core.StagePlayerLoad(false);
+        return cacheFlag;
     }
 
     private void UpdateDisplays()

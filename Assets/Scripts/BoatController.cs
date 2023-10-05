@@ -64,6 +64,22 @@ public class BoatController : MonoBehaviour
         clickMarkerLine.enabled = false;
     }
 
+    Vector3 seaLevelPosition = Vector3.zero;
+    Vector3 seaLevelRotation = Vector3.zero;
+
+    private void KeepAtSeeLevel()
+    {
+        // cap position
+        seaLevelPosition = this.transform.position;
+        seaLevelPosition.y = 0;
+        this.transform.position = seaLevelPosition;
+        // cap rotation
+        seaLevelRotation = this.transform.rotation.eulerAngles;
+        seaLevelRotation.x = 0;
+        seaLevelRotation.z = 0;
+        this.transform.rotation = Quaternion.Euler(seaLevelRotation);
+    }
+
     private void Update()
     {
         if (Core.GetLevelState() != LEVEL_STATE.Ongoing) return;
@@ -99,6 +115,7 @@ public class BoatController : MonoBehaviour
         movementDirection = (clickPosition - this.transform.position);
 
         AvoidBarrier();
+        KeepAtSeeLevel();
 
         UpdateDisplays();
 

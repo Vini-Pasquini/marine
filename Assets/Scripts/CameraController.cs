@@ -4,6 +4,7 @@ using UnityEngine;
 using static TMPro.TMP_Compatibility;
 using UnityEngine.UI;
 using System.Linq;
+using Unity.VisualScripting;
 
 public class CameraController : MonoBehaviour
 {
@@ -16,19 +17,24 @@ public class CameraController : MonoBehaviour
     private float cameraSpeed = .015f;
 
     [SerializeField] private GameObject boatLocator;
+    
+    [SerializeField] private GameObject interactionMenu;
+    private Transform interactionMenuGrid;
 
     private void Start()
     {
         lockOnPlayer = true;
         clickPosition = Vector3.zero;
-        boatLocator.SetActive(false);   
+        boatLocator.SetActive(false);
+
+        //interactionMenu = GameObject.Find("InteractionMenu");
+        interactionMenuGrid = interactionMenu.transform.GetChild(0);
     }
 
     RaycastHit hitInfo;
     GameObject hoveredObject;
-    GameObject cashedHoverdObject;
+    GameObject cachedHoverdObject;
 
-    [SerializeField] private GameObject interactionMenu;
 
     private float scrollSpeed = 1000f; // placeholder
     private float minCameraDistance = 10f; // placeholder
@@ -50,7 +56,7 @@ public class CameraController : MonoBehaviour
             lockOnPlayer = !lockOnPlayer;
         }
 
-        EnemyHighlight(); // placeholder
+        ObjectHighlight(); // placeholder
 
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
@@ -65,11 +71,10 @@ public class CameraController : MonoBehaviour
             movingCamera = false;
             anchorPosition.y = 0f;
             // object interaction
-            interactionMenu.transform.position = Input.mousePosition;
-            interactionMenu.SetActive(hoveredObject != null && (hoveredObject.transform.position - playerBoat.transform.position).magnitude <= interactionDistance);
+            InteractionHandler();
         }
 
-        cameraSpeed = cameraRigScale/1500f;
+        cameraSpeed = cameraRigScale / 1500f;
 
         if (!lockOnPlayer)
         {
@@ -91,21 +96,42 @@ public class CameraController : MonoBehaviour
         UpdateLocator(boatLocator, playerBoat);
     }
 
+    private void InteractionHandler()
+    {
+        foreach (Button childObject in interactionMenuGrid.GetComponentsInChildren<Button>()) childObject.gameObject.SetActive(false);
+        if (cachedHoverdObject == null) return;
+        switch (cachedHoverdObject.layer)
+        {
+            case (int)LAYERS.Enemy:
+                interactionMenuGrid.Find("Battle").gameObject.SetActive(true);
+                break;
+            case (int)LAYERS.Animal:
+                interactionMenuGrid.Find("Rescue").gameObject.SetActive(true);
+                break;
+            default: break;
+        }
+        interactionMenuGrid.Find("Mark").gameObject.SetActive(true);
+        interactionMenu.transform.position = Input.mousePosition;
+        interactionMenu.SetActive(hoveredObject != null && (hoveredObject.transform.position - playerBoat.transform.position).magnitude <= interactionDistance);
+    }
+
+    [SerializeField] private LayerMask layerMask;
+
     // placeholder
-    private void EnemyHighlight()
+    private void ObjectHighlight()
     {
         hoveredObject = null;
-        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, 1 << (int)LAYERS.Enemy))
+        if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, layerMask))
         {
             hoveredObject = hitInfo.transform.gameObject;
         }
         if (hoveredObject == null)
         {
-            if (cashedHoverdObject != null) cashedHoverdObject.GetComponent<MeshRenderer>().enabled = false;
+            if (cachedHoverdObject != null) cachedHoverdObject.GetComponent<MeshRenderer>().enabled = false;
             return;
         }
-        cashedHoverdObject = hoveredObject;
-        cashedHoverdObject.GetComponent<MeshRenderer>().enabled = true;
+        cachedHoverdObject = hoveredObject;
+        cachedHoverdObject.GetComponent<MeshRenderer>().enabled = true;
     }
 
     private void UpdateLocator(GameObject locator, GameObject target)

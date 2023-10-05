@@ -2,17 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyController : MonoBehaviour
+public class AnimalController : MonoBehaviour
 {
     private void Start()
     {
-        /* enemy init */
-        // select enemy type ()
-        // load enemy model
+        /* animal init */
+        // select animal type ()
+        // load animal model
         // apply convex mesh collider
-        /* enemy highlight init */
-        // dup model mesh as enemy highlight
-        // set enemy highlight to "enemy" layer
+        /* animal highlight init */
+        // dup model mesh as animal highlight
+        // set animal highlight to "animal" layer
         // change material to SelectionHighlightMat
         // meshrenderer.enabled = false
     }

@@ -116,7 +116,7 @@ public class CameraController : MonoBehaviour
         }
         interactionMenuGrid.Find("Mark").gameObject.SetActive(true);
         interactionMenu.transform.position = Input.mousePosition;
-        interactionMenu.SetActive(hoveredObject != null && (hoveredObject.transform.position - playerBoat.transform.position).magnitude <= interactionDistance);
+        interactionMenu.SetActive(!interactionMenu.activeSelf && hoveredObject != null && (hoveredObject.transform.position - playerBoat.transform.position).magnitude <= interactionDistance);
     }
 
     [SerializeField] private LayerMask layerMask;

@@ -53,4 +53,22 @@ public class MenuController : MonoBehaviour
 
         SceneManager.LoadScene(nextScene);
     }
+
+    public bool OnRescueButtonPress()
+    {
+        CameraController cameraController = Camera.main.GetComponentInParent<CameraController>();
+        if (cameraController == null) return false;
+
+        GameObject cachedHoveredObject = cameraController.GetCachedHoveredObject();
+        if (cachedHoveredObject == null) return false;
+        
+        AnimalController animalController = cachedHoveredObject.GetComponentInParent<AnimalController>();
+        if (animalController == null) return false;
+        
+        GameObject playerBoat = GameObject.Find("PlayerBoat");
+        if (playerBoat == null) return false;
+        
+        animalController.SetTargetObject(playerBoat);
+        return true;
+    }
 }

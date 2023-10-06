@@ -33,8 +33,12 @@ public class CameraController : MonoBehaviour
 
     RaycastHit hitInfo;
     GameObject hoveredObject;
-    GameObject cachedHoverdObject;
+    private GameObject cachedHoverdObject;
 
+    public GameObject GetCachedHoveredObject()
+    {
+        return cachedHoverdObject;
+    }
 
     private float scrollSpeed = 1000f; // placeholder
     private float minCameraDistance = 10f; // placeholder

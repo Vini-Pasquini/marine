@@ -607,6 +607,10 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 746280144942479146, guid: 8649985c66fd40545be9831d20fa4518, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 746280144942479146, guid: 8649985c66fd40545be9831d20fa4518, type: 3}
       propertyPath: timeBetweenPoints
       value: 0.1
       objectReference: {fileID: 0}
@@ -1179,7 +1183,7 @@ LineRenderer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1117906323}
-  m_Enabled: 0
+  m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
@@ -1271,19 +1275,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &1117906329
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1117906323}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9a042c38a3330a44b5d6e876177cd6e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  lineLength: 5
 --- !u!1 &1127131860
 GameObject:
   m_ObjectHideFlags: 0

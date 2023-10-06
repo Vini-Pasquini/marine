@@ -20,6 +20,16 @@ public class DrawProjection : MonoBehaviour
 
     void Update()
     {
+        Vector3 startingVelocity = cannonController.ShotPoint.up * cannonController.BlastPower;
+        lineRenderer.positionCount = numPoints;
+        lineRenderer.SetPosition(0, cannonController.ShotPoint.position);
+        for(int i = 1; i < numPoints; i++)
+        {
+            Vector3 pointPosition = cannonController.ShotPoint.position + (cannonController.transform.up * i);
+            lineRenderer.SetPosition(i, pointPosition);
+        }
+
+        /*
         lineRenderer.positionCount = numPoints;
         List<Vector3> points = new List<Vector3>();
         Vector3 startingPosition = cannonController.ShotPoint.position;
@@ -38,5 +48,6 @@ public class DrawProjection : MonoBehaviour
             }
         }
         lineRenderer.SetPositions(points.ToArray());    
+        */
     }
 }

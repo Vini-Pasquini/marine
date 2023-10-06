@@ -4,17 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Water
-  - Marker
+  - Enemy
+  - BattleManager
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Placeholder
+  - 
   - Water
   - UI
-  - Barrier
-  - CannonBall
   - 
   - 
   - 
@@ -34,15 +32,14 @@ TagManager:
   - 
   - 
   - 
-  - Loot
-  - Fuel
-  - Trash
-  - Animal
-  - Enemy
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
+  - 
   m_SortingLayers:
   - name: Default
     uniqueID: 0
-    locked: 0
-  - name: Effect
-    uniqueID: 35907631
     locked: 0

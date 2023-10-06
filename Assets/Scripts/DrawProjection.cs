@@ -37,6 +37,6 @@ public class DrawProjection : MonoBehaviour
                 break;
             }
         }
-        lineRenderer.SetPositions(points.ToArray());
+        lineRenderer.SetPositions(points.ToArray());    
     }
 }

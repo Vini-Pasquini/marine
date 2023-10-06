@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CannonController : MonoBehaviour
 {
-    public float rotationSpeed = 0.8f;
-    public float BlastPower = 4;
+    public float rotationSpeed = 0.6f;
+    public float BlastPower = 3;
 
     public GameObject CannonBall;
     public Transform ShotPoint;

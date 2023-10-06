@@ -127,7 +127,7 @@ public class CameraController : MonoBehaviour
         hoveredObject = null;
         if (Physics.Raycast(Camera.main.ScreenPointToRay(Input.mousePosition), out hitInfo, Mathf.Infinity, layerMask))
         {
-            hoveredObject = hitInfo.transform.gameObject;
+            hoveredObject = hitInfo.collider.gameObject;
         }
         if (hoveredObject == null)
         {

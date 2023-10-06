@@ -7,7 +7,6 @@ public enum LAYERS
     Water,
     UI,
     Barrier,
-    CannonBall,
     Loot = 27,
     Fuel,
     Trash,

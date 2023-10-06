@@ -10,9 +10,10 @@ TagManager:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Placeholder
   - Water
   - UI
+  - Barrier
   - 
   - 
   - 
@@ -33,12 +34,11 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - Loot
+  - Fuel
+  - Trash
+  - Animal
+  - Enemy
   m_SortingLayers:
   - name: Default
     uniqueID: 0

@@ -110,7 +110,7 @@ public class CameraController : MonoBehaviour
                 interactionMenuGrid.Find("Battle").gameObject.SetActive(true);
                 break;
             case (int)LAYERS.Animal:
-                interactionMenuGrid.Find("Rescue").gameObject.SetActive(true);
+                interactionMenuGrid.Find(Core.GetIsOnRescue() ? "Release" : "Rescue").gameObject.SetActive(true);
                 break;
             default: break;
         }

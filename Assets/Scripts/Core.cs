@@ -36,6 +36,10 @@ public static class Core
     private static bool playerLoadStaged = false;
     public static bool IsPlayerLoadStaged() { return playerLoadStaged; }
     public static void StagePlayerLoad(bool newValue) { playerLoadStaged = newValue; }
+    
+    private static bool isOnRescue = false;
+    public static bool GetIsOnRescue() { return isOnRescue; }
+    public static void SetIsOnRescue(bool newValue) { isOnRescue = newValue; }
 
     // gameState
     private static string lastActiveSceneName = null;

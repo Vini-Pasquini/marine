@@ -57,12 +57,11 @@ public class MenuController : MonoBehaviour
     public void OnRescueButtonPress()
     {
         // will do more stuff here in the future
-        if (RescueInteraction()) Debug.Log("Now Rescuing Animal");
+        RescueInteraction(Core.GetIsOnRescue());
     }
 
-    private bool RescueInteraction()
+    private bool RescueInteraction(bool isOnRescue)
     {
-
         CameraController cameraController = Camera.main.GetComponentInParent<CameraController>();
         if (cameraController == null) return false;
 
@@ -75,7 +74,8 @@ public class MenuController : MonoBehaviour
         GameObject playerBoat = GameObject.Find("PlayerBoat");
         if (playerBoat == null) return false;
 
-        animalController.SetTargetObject(playerBoat);
+        animalController.SetTargetObject(isOnRescue ? null : playerBoat);
+        Core.SetIsOnRescue(!isOnRescue);
         return true;
     }
 }

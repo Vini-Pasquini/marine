@@ -5,7 +5,7 @@ using UnityEngine;
 public class CannonController : MonoBehaviour
 {
     public float rotationSpeed = 0.6f;
-    public float BlastPower = 3;
+    public float BlastPower = 0;
 
     public GameObject CannonBall;
     public Transform ShotPoint;
@@ -20,6 +20,8 @@ public class CannonController : MonoBehaviour
 
     private void Update()
     {
+        BlastPower = GameObject.FindGameObjectWithTag("Alavanca").GetComponent<GearManager>().GetBulletSpeed();
+
         MoveHarpoon();
         Shoot();
     }

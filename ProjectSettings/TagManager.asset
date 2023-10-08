@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Enemy
   - BattleManager
+  - Alavanca
   layers:
   - Default
   - TransparentFX

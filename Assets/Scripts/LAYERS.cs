@@ -7,6 +7,7 @@ public enum LAYERS
     Water,
     UI,
     Barrier,
+    RescueArea,
     Loot = 27,
     Fuel,
     Trash,

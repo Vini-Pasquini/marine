@@ -32,6 +32,9 @@ public static class Core
     public static Quaternion GetPlayerRotation() { return playerRotation; }
     public static void SetPlayerRotation(Quaternion rotation) { playerRotation = rotation; }
 
+    private static float radarRange = 5f; // placeholder
+    public static float GetRadarRange() { return radarRange; }
+
     // flags
     private static bool playerLoadStaged = false;
     public static bool IsPlayerLoadStaged() { return playerLoadStaged; }

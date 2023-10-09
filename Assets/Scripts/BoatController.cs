@@ -32,9 +32,11 @@ public class BoatController : MonoBehaviour
     [SerializeField] private GameObject levelOverOverlay;
 
     private GameObject playerSpawn;
+    private GameObject radarThingy;
 
     private void Start()
     {
+        radarThingy = GameObject.Find("Radar");
         // spawn
         playerSpawn = GameObject.Find("PlayerSpawn");
         // barrier init
@@ -146,11 +148,17 @@ public class BoatController : MonoBehaviour
         clickMarkerLine.SetPosition(0, this.transform.position);
         clickMarkerLine.SetPosition(clickMarkerLine.positionCount - 1, clickPosition);
 
+        float currentRange = Core.GetRadarRange() * 2f;
+        currentScale = currentScale >= currentRange ? 0f : Mathf.Min(currentRange, currentScale + (currentRange * Time.deltaTime));
+        radarThingy.transform.localScale = (Vector3.up * .01f) + ((Vector3.down + Vector3.one) * currentScale);
+
         // debug stuff
 
         DebugDrawBarrierCollisionRays();
         Debug.DrawLine(this.transform.position, this.transform.position + movementDirection);
     }
+
+    float currentScale = 0f;
 
     private void FixedUpdate()
     {

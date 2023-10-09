@@ -21,6 +21,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private GameObject interactionMenu;
     private Transform interactionMenuGrid;
 
+    private float interactionDistance = 0f;
+
     private void Start()
     {
         lockOnPlayer = true;
@@ -29,6 +31,7 @@ public class CameraController : MonoBehaviour
 
         //interactionMenu = GameObject.Find("InteractionMenu");
         interactionMenuGrid = interactionMenu.transform.GetChild(0);
+        interactionDistance = Core.GetRadarRange();
     }
 
     RaycastHit hitInfo;
@@ -44,7 +47,6 @@ public class CameraController : MonoBehaviour
     private float minCameraDistance = 10f; // placeholder
     private float maxCameraDistance = 100f; // placeholder
 
-    private float interactionDistance = 10f;
 
     private void Update()
     {

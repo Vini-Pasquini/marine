@@ -8,6 +8,15 @@ public class AnimalController : MonoBehaviour
     AnimalAI animal;
     GameObject targetObject = null;
 
+    private float baseAnimalSpeed = 5f;
+
+    private bool isSafe = false;
+
+    public bool GetIsSafe()
+    {
+        return isSafe;
+    }
+
     private void Start()
     {
         /* animal init */
@@ -23,6 +32,8 @@ public class AnimalController : MonoBehaviour
         animalWaypoint = this.transform.GetChild(0).gameObject;
         animal = this.transform.GetChild(1).GetComponent<AnimalAI>();
         animal.SetWaypointObject(animalWaypoint);
+        animal.SetAnimalSpeed(baseAnimalSpeed);
+        animal.SetAnimalRotationRate(baseAnimalSpeed * .1f);
     }
 
     private void Update()
@@ -36,8 +47,16 @@ public class AnimalController : MonoBehaviour
         animalWaypoint.transform.position = targetObject.transform.position;
     }
 
-    public void SetTargetObject(GameObject newtarget)
+    public void SetTargetObject(GameObject newTarget)
     {
-        targetObject = newtarget;
+        animal.SetAnimalSpeed(newTarget != null ? baseAnimalSpeed * 3 : baseAnimalSpeed);
+        animal.SetAnimalRotationRate(newTarget != null ? baseAnimalSpeed * .3f : baseAnimalSpeed * .1f);
+        RaycastHit hit;
+        if (newTarget == null && Physics.Raycast((animalWaypoint.transform.position + Vector3.up), Vector3.down, out hit, Mathf.Infinity, 1 << (int)LAYERS.RescueArea))
+        {
+            isSafe = true;
+            Core.IncrementPlayerGold(10);
+        }
+        targetObject = newTarget;
     }
 }

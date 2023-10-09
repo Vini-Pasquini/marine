@@ -11,18 +11,18 @@ public static class Core
 
     private static float playerFuel = 0f;
     public static float GetPlayerFuel() { return playerFuel; }
-    public static void SetPlayerFuel(float newValue) { playerFuel = newValue; }
-    public static void IncrementPlayerFuel(float increment) { playerFuel += increment; if (playerFuel < 0f) playerFuel = 0f; }
+    public static void SetPlayerFuel(float newValue) { playerFuel = newValue; UpdateDisplays(); }
+    public static void IncrementPlayerFuel(float increment) { playerFuel += increment; if (playerFuel < 0f) playerFuel = 0f; UpdateDisplays(); }
 
     private static float playerHealth = 0f;
     public static float GetPlayerHealth() { return playerHealth; }
-    public static void SetPlayerHealth(float newValue) { playerHealth = newValue; }
-    public static void IncrementPlayerHealth(float increment) { playerHealth += increment; if (playerHealth < 0f) playerHealth = 0f; }
+    public static void SetPlayerHealth(float newValue) { playerHealth = newValue; UpdateDisplays(); }
+    public static void IncrementPlayerHealth(float increment) { playerHealth += increment; if (playerHealth < 0f) playerHealth = 0f; UpdateDisplays(); }
 
     private static float playerGold = 0f;
     public static float GetPlayerGold() { return playerGold; }
-    public static void SetPlayerGold(float newValue) { playerGold = newValue; }
-    public static void IncrementPlayerGold(float increment) { playerGold += increment; if (playerGold < 0f) playerGold = 0f; }
+    public static void SetPlayerGold(float newValue) { playerGold = newValue; UpdateDisplays(); }
+    public static void IncrementPlayerGold(float increment) { playerGold += increment; if (playerGold < 0f) playerGold = 0f; UpdateDisplays(); }
 
     private static Vector3 playerPosition = Vector3.zero;
     public static Vector3 GetPlayerPosition() { return playerPosition; }
@@ -54,5 +54,17 @@ public static class Core
         playerPosition = Vector3.zero;
         playerRotation = Quaternion.identity;
         currentLevelState = levelStateOverride;
+    }
+
+    // util
+    
+    public static bool UpdateDisplays()
+    {
+        LevelDisplayController levelDisplayController = GameObject.Find("Canvas").GetComponent<LevelDisplayController>();
+        if (levelDisplayController == null) return false;
+        levelDisplayController.UpdateFuelDisplay();
+        levelDisplayController.UpdateHealthDisplay();
+        levelDisplayController.UpdateGoldDisplay();
+        return true;
     }
 }

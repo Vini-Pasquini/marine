@@ -29,7 +29,6 @@ public class BoatController : MonoBehaviour
     private float boatBarrierRange = 5f;
     private bool avoidBarrier = false;
     // GUI
-    private LevelDisplayController levelDisplayController;
     [SerializeField] private GameObject levelOverOverlay;
 
     private GameObject playerSpawn;
@@ -50,8 +49,7 @@ public class BoatController : MonoBehaviour
         movementDirection = Vector3.zero;
         LoadCachedPlayer();
         // gui init
-        levelDisplayController = GameObject.Find("Canvas").GetComponent<LevelDisplayController>();
-        UpdateDisplays();
+        Core.UpdateDisplays();
     }
 
     private void EndLevel(LEVEL_STATE endState, Color screenColor)
@@ -116,8 +114,6 @@ public class BoatController : MonoBehaviour
 
         AvoidBarrier();
         KeepAtSeeLevel();
-
-        UpdateDisplays();
 
         // level loss check (placeholder)
 
@@ -217,13 +213,6 @@ public class BoatController : MonoBehaviour
         this.transform.rotation = cacheFlag ? Core.GetPlayerRotation() : playerSpawn.transform.rotation;
         Core.StagePlayerLoad(false);
         return cacheFlag;
-    }
-
-    private void UpdateDisplays()
-    {
-        levelDisplayController.UpdateFuelDisplay();
-        levelDisplayController.UpdateHealthDisplay();
-        levelDisplayController.UpdateGoldDisplay();
     }
 
     /* Debug Methods */

@@ -57,7 +57,8 @@ public class MenuController : MonoBehaviour
     public void OnRescueButtonPress()
     {
         // will do more stuff here in the future
-        RescueInteraction(Core.GetIsOnRescue());
+        bool rescueFlag = Core.GetIsOnRescue();
+        RescueInteraction(rescueFlag);
     }
 
     private bool RescueInteraction(bool isOnRescue)
@@ -73,6 +74,8 @@ public class MenuController : MonoBehaviour
 
         GameObject playerBoat = GameObject.Find("PlayerBoat");
         if (playerBoat == null) return false;
+
+        if(animalController.GetIsSafe()) return false;
 
         animalController.SetTargetObject(isOnRescue ? null : playerBoat);
         Core.SetIsOnRescue(!isOnRescue);

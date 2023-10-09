@@ -17,7 +17,22 @@ public class CameraController : MonoBehaviour
     private float cameraSpeed = .015f;
 
     [SerializeField] private GameObject boatLocator;
-    
+
+    [SerializeField] private GameObject enemyLocator;
+    private GameObject enemyLocatorTarget = null;
+    public GameObject GetEnemyLocatorTarget() { return enemyLocatorTarget; }
+    public void SetEnemyLocatorTarget(GameObject newTarget) { enemyLocatorTarget = newTarget; }
+
+    [SerializeField] private GameObject animalLocator;
+    private GameObject animalLocatorTarget = null;
+    public GameObject GetAnimalLocatorTarget() { return animalLocatorTarget; }
+    public void SetAnimalLocatorTarget(GameObject newTarget) { animalLocatorTarget = newTarget; }
+
+    [SerializeField] private GameObject fuelLocator;
+    private GameObject fuelLocatorTarget = null;
+    public GameObject GetFuelLocatorTarget() { return fuelLocatorTarget; }
+    public void SetFuelLocatorTarget(GameObject newTarget) { fuelLocatorTarget = newTarget; }
+
     [SerializeField] private GameObject interactionMenu;
     private Transform interactionMenuGrid;
 
@@ -27,7 +42,6 @@ public class CameraController : MonoBehaviour
     {
         lockOnPlayer = true;
         clickPosition = Vector3.zero;
-        boatLocator.SetActive(false);
 
         //interactionMenu = GameObject.Find("InteractionMenu");
         interactionMenuGrid = interactionMenu.transform.GetChild(0);
@@ -100,6 +114,9 @@ public class CameraController : MonoBehaviour
         }
 
         UpdateLocator(boatLocator, playerBoat);
+        UpdateLocator(enemyLocator, enemyLocatorTarget, true);
+        UpdateLocator(animalLocator, animalLocatorTarget, true);
+        UpdateLocator(fuelLocator, fuelLocatorTarget, true);
     }
 
     private void InteractionHandler()
@@ -112,22 +129,33 @@ public class CameraController : MonoBehaviour
                 interactionMenuGrid.Find("Battle").gameObject.SetActive(true);
                 break;
             case (int)LAYERS.Animal:
-                if (SafeAnimal()) break;
-                interactionMenuGrid.Find(Core.GetIsOnRescue() ? "Release" : "Rescue").gameObject.SetActive(true);
+                AnimalController animalController = cachedHoverdObject.GetComponentInParent<AnimalController>();
+                if (animalController == null) break;
+                if (animalController.GetIsSafe()) break;
+
+                Transform rescueButton = interactionMenuGrid.Find("Rescue"); ;
+                if (!Core.GetIsOnRescue())
+                {
+                    rescueButton.gameObject.SetActive(true);
+                    rescueButton.GetComponent<Button>().interactable = true;
+                    break;
+                }
+                if (!animalController.IsFollowingBoat())
+                {
+                    rescueButton.gameObject.SetActive(true);
+                    rescueButton.GetComponent<Button>().interactable = false;
+                    break;
+                }
+                interactionMenuGrid.Find("Release").gameObject.SetActive(true);
+                break;
+
+                //interactionMenuGrid.Find(Core.GetIsOnRescue() ? "Release" : "Rescue").gameObject.SetActive(true);
                 break;
             default: break;
         }
         interactionMenuGrid.Find("Mark").gameObject.SetActive(true);
         interactionMenu.transform.position = Input.mousePosition;
         interactionMenu.SetActive(!interactionMenu.activeSelf && hoveredObject != null && (hoveredObject.transform.position - playerBoat.transform.position).magnitude <= interactionDistance);
-    }
-
-    private bool SafeAnimal()
-    {
-        /* placeholder */
-        AnimalController animalController = cachedHoverdObject.GetComponentInParent<AnimalController>();
-        if (animalController == null) return false;
-        return animalController.GetIsSafe();
     }
 
     [SerializeField] private LayerMask layerMask;
@@ -149,10 +177,10 @@ public class CameraController : MonoBehaviour
         cachedHoverdObject.GetComponent<MeshRenderer>().enabled = true;
     }
 
-    private void UpdateLocator(GameObject locator, GameObject target)
+    private bool UpdateLocator(GameObject locator, GameObject target, bool markInsideViewport = false)
     {
         // test locator flip fix
-        /*
+        /* EU PRECISO CORRIGIR ISSO ANTES DO PLAYTEST; SOCORRO!!!
         Vector3 treco = playerBoat.transform.position - Camera.main.transform.position;
         float A = Camera.main.transform.forward.x * (Camera.main.transform.up.x - treco.x);
         float B = Camera.main.transform.forward.y * (Camera.main.transform.up.y - treco.y);
@@ -163,24 +191,31 @@ public class CameraController : MonoBehaviour
         }
         */
 
-        Vector3 boatViewportPosition = Camera.main.WorldToViewportPoint(target.transform.position);
+        if (target == null)
+        {
+            if (locator.activeSelf) locator.SetActive(false);
+            return false;
+        }
+
+        Vector3 targetViewportPosition = Camera.main.WorldToViewportPoint(target.transform.position);
         Vector3 newLocatorViewportPosition = new Vector3
         (
-            newLocatorViewportPosition.x = Mathf.Min(1f, Mathf.Max(0f, boatViewportPosition.x)),
-            newLocatorViewportPosition.y = Mathf.Min(1f, Mathf.Max(0f, boatViewportPosition.y)),
+            newLocatorViewportPosition.x = Mathf.Min(1f, Mathf.Max(0f, targetViewportPosition.x)),
+            newLocatorViewportPosition.y = Mathf.Min(1f, Mathf.Max(0f, targetViewportPosition.y)),
             0f
         );
         locator.transform.position = Camera.main.ViewportToScreenPoint(newLocatorViewportPosition);
 
-        if (boatViewportPosition.x <= 0f || boatViewportPosition.x >= 1f || boatViewportPosition.y <= 0f || boatViewportPosition.y >= 1f)
+        if (targetViewportPosition.x <= 0f || targetViewportPosition.x >= 1f || targetViewportPosition.y <= 0f || targetViewportPosition.y >= 1f || markInsideViewport)
         {
             if (!locator.activeSelf) locator.SetActive(true);
             Vector3 screenCenter = Camera.main.ViewportToScreenPoint(new Vector3(.5f, .5f, 0f));
             Vector3 screenUp = Camera.main.ViewportToScreenPoint(new Vector3(0f, .5f, 0f));
             Vector3 boatScreenPosition = Camera.main.WorldToScreenPoint(target.transform.position);
-            locator.transform.rotation = Quaternion.Euler(0f, 0f, (Vector3.Angle(screenUp, boatScreenPosition - screenCenter)) * (boatViewportPosition.x > .5f ? -1 : 1));
-            return;
+            locator.transform.rotation = Quaternion.Euler(0f, 0f, (Vector3.Angle(screenUp, boatScreenPosition - screenCenter)) * (targetViewportPosition.x > .5f ? -1 : 1));
+            return true;
         }
         if (locator.activeSelf) locator.SetActive(false);
+        return false;
     }
 }

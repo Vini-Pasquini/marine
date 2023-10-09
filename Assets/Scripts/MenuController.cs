@@ -81,4 +81,32 @@ public class MenuController : MonoBehaviour
         Core.SetIsOnRescue(!isOnRescue);
         return true;
     }
+
+    public void OnMarkButtonPress()
+    {
+        MarkInteraction();
+    }
+
+    private bool MarkInteraction()
+    {
+        CameraController cameraController = Camera.main.GetComponentInParent<CameraController>();
+        if (cameraController == null) return false;
+
+        GameObject cachedHoveredObject = cameraController.GetCachedHoveredObject();
+        if (cachedHoveredObject == null) return false;
+
+        switch (cachedHoveredObject.layer)
+        {
+            case (int)LAYERS.Enemy:
+                cameraController.SetEnemyLocatorTarget(cameraController.GetEnemyLocatorTarget() == cachedHoveredObject ? null : cachedHoveredObject);
+                return true;
+            case (int)LAYERS.Animal:
+                cameraController.SetAnimalLocatorTarget(cameraController.GetAnimalLocatorTarget() == cachedHoveredObject ? null : cachedHoveredObject);
+                return true;
+            case (int)LAYERS.Fuel:
+                cameraController.SetFuelLocatorTarget(cameraController.GetFuelLocatorTarget() == cachedHoveredObject ? null : cachedHoveredObject);
+                return true;
+            default: return false;
+        }
+    }
 }

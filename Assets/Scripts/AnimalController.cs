@@ -8,6 +8,11 @@ public class AnimalController : MonoBehaviour
     AnimalAI animal;
     GameObject targetObject = null;
 
+    public bool IsFollowingBoat()
+    {
+        return targetObject != null;
+    }
+
     private float baseAnimalSpeed = 5f;
 
     private bool isSafe = false;

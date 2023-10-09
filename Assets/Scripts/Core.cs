@@ -32,7 +32,7 @@ public static class Core
     public static Quaternion GetPlayerRotation() { return playerRotation; }
     public static void SetPlayerRotation(Quaternion rotation) { playerRotation = rotation; }
 
-    private static float radarRange = 5f; // placeholder
+    private static float radarRange = 7f; // placeholder
     public static float GetRadarRange() { return radarRange; }
 
     // flags
@@ -54,6 +54,8 @@ public static class Core
         playerFuel = 100f;
         playerHealth = 100f;
         playerGold = 0f;
+        animalCount = 3;
+        enemyCount = 3;
         playerPosition = Vector3.zero;
         playerRotation = Quaternion.identity;
         currentLevelState = levelStateOverride;
@@ -68,6 +70,19 @@ public static class Core
         levelDisplayController.UpdateFuelDisplay();
         levelDisplayController.UpdateHealthDisplay();
         levelDisplayController.UpdateGoldDisplay();
+        levelDisplayController.UpdateTaskDisplay();
         return true;
     }
+
+    // playtest
+
+    private static int animalCount = 3;
+    public static int GetAnimalCount() {  return animalCount; }
+    public static void SetAnimalCount(int newValue) { animalCount = newValue; }
+    public static void IncrementAnimalCount(int increment) { animalCount += increment; if (animalCount < 0f) animalCount = 0; UpdateDisplays(); }
+
+    private static int enemyCount = 3;
+    public static int GetEnemyCount() { return enemyCount; }
+    public static void SetEnemyCount(int newValue) { enemyCount = newValue; }
+    public static void IncrementEnemyCount(int increment) { enemyCount += increment; if (enemyCount < 0f) enemyCount = 0; UpdateDisplays(); }
 }

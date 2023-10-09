@@ -86,7 +86,7 @@ public class BoatController : MonoBehaviour
         
         // player input
 
-        if (Input.GetKeyDown(KeyCode.H)) // debug
+        if (Core.GetAnimalCount() <= 0f && Core.GetEnemyCount() <= 0f) // debug
         {
             this.EndLevel(LEVEL_STATE.Success, new Color(0f, 1f, 0f, .5f));
         }
@@ -167,7 +167,7 @@ public class BoatController : MonoBehaviour
         MovePlayerBoat();
         if (playerBody.velocity.magnitude != 0f)
         {
-            //Core.IncrementPlayerFuel(-playerBody.velocity.magnitude * fuelUseRate);
+            Core.IncrementPlayerFuel(-playerBody.velocity.magnitude * fuelUseRate);
         }
     }
 
@@ -214,7 +214,7 @@ public class BoatController : MonoBehaviour
 
     private bool LoadCachedPlayer()
     {
-        Core.IncrementPlayerHealth(-40); // debug
+        //Core.IncrementPlayerHealth(-40); // debug
         bool cacheFlag = Core.IsPlayerLoadStaged();
         this.transform.position = cacheFlag ? Core.GetPlayerPosition() : playerSpawn.transform.position;
         clickPosition = this.transform.position;

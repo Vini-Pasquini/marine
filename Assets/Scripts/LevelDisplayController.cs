@@ -9,20 +9,27 @@ public class LevelDisplayController : MonoBehaviour
 
     public void UpdateFuelDisplay(float newValue = -1f)
     {
-        fuelDisplay.text = "FUEL: " + (newValue >= 0f ? newValue : Core.GetPlayerFuel());
+        fuelDisplay.text = "FUEL:\n" + (newValue >= 0f ? newValue : Core.GetPlayerFuel());
     }
 
     [SerializeField] private TextMeshProUGUI healthDisplay;
 
     public void UpdateHealthDisplay(float newValue = -1f)
     {
-        healthDisplay.text = "HP: " + (newValue >= 0f ? newValue : Core.GetPlayerHealth());
+        healthDisplay.text = "HP:\n" + (newValue >= 0f ? newValue : Core.GetPlayerHealth());
     }
 
     [SerializeField] private TextMeshProUGUI goldDisplay;
 
     public void UpdateGoldDisplay(float newValue = -1f)
     {
-        goldDisplay.text = "GOLD: " + (newValue >= 0f ? newValue : Core.GetPlayerGold());
+        goldDisplay.text = "GOLD:\n" + (newValue >= 0f ? newValue : Core.GetPlayerGold());
+    }
+
+    [SerializeField] private TextMeshProUGUI taskDisplay;
+
+    public void UpdateTaskDisplay(float newValue = -1f)
+    {
+        taskDisplay.text = "TASKS:\n" + (newValue >= 0f ? newValue : Core.GetAnimalCount() + Core.GetEnemyCount());
     }
 }

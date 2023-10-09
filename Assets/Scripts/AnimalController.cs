@@ -61,6 +61,7 @@ public class AnimalController : MonoBehaviour
         {
             isSafe = true;
             Core.IncrementPlayerGold(10);
+            Core.IncrementAnimalCount(-1);
         }
         targetObject = newTarget;
     }

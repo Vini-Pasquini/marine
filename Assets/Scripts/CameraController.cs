@@ -110,6 +110,7 @@ public class CameraController : MonoBehaviour
                 interactionMenuGrid.Find("Battle").gameObject.SetActive(true);
                 break;
             case (int)LAYERS.Animal:
+                if (SafeAnimal()) break;
                 interactionMenuGrid.Find(Core.GetIsOnRescue() ? "Release" : "Rescue").gameObject.SetActive(true);
                 break;
             default: break;
@@ -117,6 +118,14 @@ public class CameraController : MonoBehaviour
         interactionMenuGrid.Find("Mark").gameObject.SetActive(true);
         interactionMenu.transform.position = Input.mousePosition;
         interactionMenu.SetActive(!interactionMenu.activeSelf && hoveredObject != null && (hoveredObject.transform.position - playerBoat.transform.position).magnitude <= interactionDistance);
+    }
+
+    private bool SafeAnimal()
+    {
+        /* placeholder */
+        AnimalController animalController = cachedHoverdObject.GetComponentInParent<AnimalController>();
+        if (animalController == null) return false;
+        return animalController.GetIsSafe();
     }
 
     [SerializeField] private LayerMask layerMask;

@@ -9,12 +9,12 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1913191008741080260}
-  - component: {fileID: 8966816655085324748}
   - component: {fileID: 5488639365517493430}
   - component: {fileID: 746280144942479146}
+  - component: {fileID: 1117906328}
   m_Layer: 0
   m_Name: Arpao
-  m_TagString: Untagged
+  m_TagString: Arpao
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -36,7 +36,46 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!120 &8966816655085324748
+--- !u!114 &5488639365517493430
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004970779452910545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8d62413caaad084e81983c987bf4eb8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  rotationSpeed: 0.6
+  BlastPower: 30
+  CannonBall: {fileID: 3256373511329305893, guid: a8406f43a24f60a469863adeee425c55, type: 3}
+  ShotPoint: {fileID: 2208921329412772523}
+  timer: 0
+  canShoot: 1
+  hasAmmo: 1
+  bulletsCounts: 15
+  yRotation: 0
+  ZRotation: 0
+--- !u!114 &746280144942479146
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3004970779452910545}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ded158cc20f2b3d4b88f106cf2c5e25e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  numPoints: 50
+  timeBetweenPoints: 0.1
+  CollidableLayers:
+    serializedVersion: 2
+    m_Bits: 127
+--- !u!120 &1117906328
 LineRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -56,7 +95,7 @@ LineRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10306, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: 70d47a1fabdd17648b2e5a06724e58ca, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -79,7 +118,7 @@ LineRenderer:
   m_SortingOrder: 0
   m_Positions:
   - {x: 0, y: 0, z: 0}
-  - {x: 0, y: 0, z: 1}
+  - {x: 0, y: 0, z: 15}
   m_Parameters:
     serializedVersion: 3
     widthMultiplier: 1
@@ -87,7 +126,7 @@ LineRenderer:
       serializedVersion: 2
       m_Curve:
       - serializedVersion: 3
-        time: 0
+        time: 0.57513046
         value: 1
         inSlope: 0
         outSlope: 0
@@ -135,39 +174,6 @@ LineRenderer:
     generateLightingData: 0
   m_UseWorldSpace: 1
   m_Loop: 0
---- !u!114 &5488639365517493430
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3004970779452910545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b8d62413caaad084e81983c987bf4eb8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  rotationSpeed: 1
-  BlastPower: 5
-  CannonBall: {fileID: 7578250813157523402, guid: 8c0a1c6b7e4ca534db87c6105f1b2f7b, type: 3}
-  ShotPoint: {fileID: 2208921329412772523}
---- !u!114 &746280144942479146
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3004970779452910545}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ded158cc20f2b3d4b88f106cf2c5e25e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  numPoints: 50
-  timeBetweenPoints: 0.1
-  CollidableLayers:
-    serializedVersion: 2
-    m_Bits: 127
 --- !u!1 &5230849494682036614
 GameObject:
   m_ObjectHideFlags: 0
@@ -230,7 +236,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: d7a86758fc140e94f8fa87b2836257d7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

@@ -5,6 +5,12 @@ using UnityEngine;
 public class LeverTest : MonoBehaviour
 {
     Vector3 mousePosition;
+    public float leverRotation = 0;
+
+    private void Update()
+    {
+        leverRotation = transform.rotation.y;
+    }
 
     private Vector3 GetMousePos()
     {

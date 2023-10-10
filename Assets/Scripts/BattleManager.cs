@@ -49,7 +49,7 @@ public class BattleManager : MonoBehaviour
         if(!GameObject.FindGameObjectWithTag("Arpao").GetComponent<CannonController>().hasAmmo)
         {
             playerLost = true;
-            Core.IncrementPlayerHealth(-10);
+            Core.IncrementPlayerHealth(-40);
         }
 
         if (hasNoEnemies || playerLost)

@@ -83,6 +83,11 @@ public class MenuController : MonoBehaviour
         return true;
     }
 
+    public void OnFuelButtonPress()
+    {
+        Core.SetPlayerFuel(100);
+    }
+
     public void OnMarkButtonPress()
     {
         MarkInteraction();

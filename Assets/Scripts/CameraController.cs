@@ -148,8 +148,8 @@ public class CameraController : MonoBehaviour
                 }
                 interactionMenuGrid.Find("Release").gameObject.SetActive(true);
                 break;
-
-                //interactionMenuGrid.Find(Core.GetIsOnRescue() ? "Release" : "Rescue").gameObject.SetActive(true);
+            case (int)LAYERS.Fuel:
+                interactionMenuGrid.Find("Fuel").gameObject.SetActive(true);
                 break;
             default: break;
         }

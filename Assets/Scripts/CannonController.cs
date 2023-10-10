@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TMPro;
 
 public class CannonController : MonoBehaviour
 {
@@ -17,15 +18,23 @@ public class CannonController : MonoBehaviour
 
     public int bulletsCounts = 15;
 
+    [SerializeField] private TextMeshProUGUI bulletDisplay;
 
     public float yRotation;
     public float ZRotation;
+
+    private void Start()
+    {
+        bulletDisplay.text = "AMMO:\n" + bulletsCounts.ToString();
+    }
 
     private void Update()
     {
         //BlastPower = GameObject.FindGameObjectWithTag("Alavanca").GetComponent<GearManager>().GetBulletSpeed();
 
-        if(bulletsCounts <= 0)
+        if (Input.GetKeyDown(KeyCode.PageDown)) { bulletsCounts--; bulletDisplay.text = "AMMO:\n" + bulletsCounts.ToString(); } // DEBUG< TIRAR DPS
+
+        if (bulletsCounts <= 0)
         {
             hasAmmo = false;
         }
@@ -42,7 +51,7 @@ public class CannonController : MonoBehaviour
         float VerticalRotation = Input.GetAxis("Vertical");
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
-            new Vector3(0, HorizontalRotation * rotationSpeed, VerticalRotation * rotationSpeed));
+            new Vector3(0, HorizontalRotation * rotationSpeed, -VerticalRotation * rotationSpeed));
 
         if(yRotation >= 180.0f)
         {
@@ -59,6 +68,7 @@ public class CannonController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 bulletsCounts -= 1;
+                bulletDisplay.text = "AMMO:\n" + bulletsCounts.ToString();
                 GameObject CreateCannonBall = Instantiate(CannonBall, ShotPoint.position, ShotPoint.rotation);
                 CreateCannonBall.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
                 Destroy(CreateCannonBall, 5);

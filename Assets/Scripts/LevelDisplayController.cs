@@ -9,6 +9,7 @@ public class LevelDisplayController : MonoBehaviour
 
     public void UpdateFuelDisplay(float newValue = -1f)
     {
+        if (fuelDisplay == null) return;
         fuelDisplay.text = "FUEL:\n" + (newValue >= 0f ? newValue : Core.GetPlayerFuel());
     }
 
@@ -16,6 +17,7 @@ public class LevelDisplayController : MonoBehaviour
 
     public void UpdateHealthDisplay(float newValue = -1f)
     {
+        if (healthDisplay == null) return;
         healthDisplay.text = "HP:\n" + (newValue >= 0f ? newValue : Core.GetPlayerHealth());
     }
 
@@ -23,6 +25,7 @@ public class LevelDisplayController : MonoBehaviour
 
     public void UpdateGoldDisplay(float newValue = -1f)
     {
+        if (goldDisplay == null) return;
         goldDisplay.text = "GOLD:\n" + (newValue >= 0f ? newValue : Core.GetPlayerGold());
     }
 
@@ -30,6 +33,7 @@ public class LevelDisplayController : MonoBehaviour
 
     public void UpdateTaskDisplay(float newValue = -1f)
     {
+        if (taskDisplay == null) return;
         taskDisplay.text = "TASKS:\n" + (newValue >= 0f ? newValue : Core.GetAnimalCount() + Core.GetEnemyCount());
     }
 }

@@ -39,6 +39,7 @@ public class MenuController : MonoBehaviour
             if (newScene.StartsWith("Level_")) Core.Reset(levelStateOverride: LEVEL_STATE.Ongoing);
         }
         if (newScene == "BattleScene") this.CacheLevelInfo();
+        if (newScene.StartsWith("Level_") && currentScene.name == "BattleScene") Core.StagePlayerLoad(true); // back to level check
         Core.SetLastActiveScene(currentScene.name);
         SceneManager.LoadScene(newScene);
     }

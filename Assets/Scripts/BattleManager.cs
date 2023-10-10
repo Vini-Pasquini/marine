@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class BattleManager : MonoBehaviour
 {
@@ -9,11 +11,13 @@ public class BattleManager : MonoBehaviour
     public bool hasNoEnemies = false;
     public bool playerLost = false;
 
+    [SerializeField] private TextMeshProUGUI enemyDisplay;
+    
     // Start is called before the first frame update
     void Start()
     {
         //new List<GameObject> enemiesList
-
+        enemyDisplay.text = "ENEMIES LEFT:\n" + (5 - points).ToString();
         //enemiesList.Add() = GameObject.FindGameObjectsWithTag("Enemy");
     }
 
@@ -27,24 +31,38 @@ public class BattleManager : MonoBehaviour
         //}
         //if(hasNoEnemies)
         //{
-        //    Debug.Log("me caguei");
+        //    Debug.Log("voce ganhou");
         //    //voce ganhou;
         //}
 
+        if(Input.GetKeyDown(KeyCode.PageUp)) { AddPoints(1); } // DEBUG< TIRAR DPS
 
         //condição de vitória
         if(points >= 5)
         {
             hasNoEnemies = true;
+            Core.IncrementEnemyCount(-1);
+            Core.IncrementPlayerGold(10);
         }
 
         //condição de derrota
-        playerLost = GameObject.FindGameObjectWithTag("Arpao").GetComponent<CannonController>().hasAmmo;
+        if(!GameObject.FindGameObjectWithTag("Arpao").GetComponent<CannonController>().hasAmmo)
+        {
+            playerLost = true;
+            Core.IncrementPlayerHealth(-10);
+        }
+
+        if (hasNoEnemies || playerLost)
+        {
+            GameObject.Find("EventSystem").GetComponent<MenuController>().OnChangeSceneButtonPress(Core.GetLastActiveScene());
+        }
     }
+
 
     public void AddPoints(int point)
     {
         points += point;
+        enemyDisplay.text = "ENEMIES LEFT:\n" + (5 - points).ToString();
         Debug.Log(points);
     }
 

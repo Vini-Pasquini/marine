@@ -38,7 +38,7 @@ public static class Core
     // flags
     private static bool playerLoadStaged = false;
     public static bool IsPlayerLoadStaged() { return playerLoadStaged; }
-    public static void StagePlayerLoad(bool newValue) { playerLoadStaged = newValue; }
+    public static void StagePlayerLoad(bool newValue) { playerLoadStaged = newValue; /* bugfix pro playtest */ Core.SetIsOnRescue(false); }
     
     private static bool isOnRescue = false;
     public static bool GetIsOnRescue() { return isOnRescue; }

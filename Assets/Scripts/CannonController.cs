@@ -32,7 +32,7 @@ public class CannonController : MonoBehaviour
     {
         //BlastPower = GameObject.FindGameObjectWithTag("Alavanca").GetComponent<GearManager>().GetBulletSpeed();
 
-        if (Input.GetKeyDown(KeyCode.PageDown)) { bulletsCounts--; bulletDisplay.text = "AMMO:\n" + bulletsCounts.ToString(); } // DEBUG< TIRAR DPS
+        if (Input.GetKeyDown(KeyCode.PageDown)) { bulletsCounts -= 5; bulletDisplay.text = "AMMO:\n" + bulletsCounts.ToString(); } // DEBUG< TIRAR DPS
 
         if (bulletsCounts <= 0)
         {

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
+using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
@@ -54,6 +55,9 @@ public class BoatController : MonoBehaviour
         Core.UpdateDisplays();
     }
 
+    [SerializeField] private TextMeshProUGUI overText;
+    [SerializeField] private TextMeshProUGUI description;
+
     private void EndLevel(LEVEL_STATE endState, Color screenColor)
     {
         levelOverOverlay.GetComponent<Image>().color = screenColor;
@@ -62,6 +66,22 @@ public class BoatController : MonoBehaviour
         playerBody.velocity = Vector3.zero;
         clickMarkerRenderer.enabled = false;
         clickMarkerLine.enabled = false;
+        overText.text = (endState == LEVEL_STATE.Success ? "VOCE GANHOU" : "VOCE PERDEU");
+        switch(endState)
+        {
+            case LEVEL_STATE.Success:
+                description.text = "Voce salvou todos os Animais e derrotou todos os Cacadores";
+                break;
+            case LEVEL_STATE.FuelFail:
+                description.text = "Acabou seu combustível, voce ficou à deriva! :v";
+                break;
+            case LEVEL_STATE.HealthFail:
+                description.text = "Seu barco afundou, voce morreu afogado(a)! :c";
+                break;
+            default:
+                description.text = "COMO VOCE CHEGOU AKI? NAO ERA PRA SER POSSIVEL VOCE LER ISSO!!!!!";
+                break;
+        }
     }
 
     Vector3 seaLevelPosition = Vector3.zero;

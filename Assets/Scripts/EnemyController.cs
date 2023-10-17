@@ -4,6 +4,14 @@ using UnityEngine;
 
 public class EnemyController : MonoBehaviour
 {
+    private ENEMY_TYPE enemyType;
+    public ENEMY_TYPE GetEnemyType() { return enemyType; }
+    public void SetEnemyType(ENEMY_TYPE newType) { enemyType = newType; }
+
+    private bool isTaskComplete = false;
+    public bool IsTaskComplete() { return isTaskComplete; }
+    public void SetTaskComplete(bool newValue) { isTaskComplete = newValue; }
+
     private void Start()
     {
         /* enemy init */

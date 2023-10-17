@@ -4,8 +4,20 @@ using UnityEngine;
 
 public class AnimalController : MonoBehaviour
 {
-    GameObject animalWaypoint;
-    AnimalAI animal;
+    private ANIMAL_TYPE animalType;
+    public ANIMAL_TYPE GetAnimalType() { return animalType; }
+    public void SetAnimalType(ANIMAL_TYPE newType) { animalType = newType; }
+
+    private bool isTaskComplete = false;
+    public bool IsTaskComplete() { return isTaskComplete; }
+    public void SetTaskComplete(bool newValue) { isTaskComplete = newValue; }
+
+    private GameObject animalWaypoint;
+    public GameObject GetAnimalWaypoint() { return animalWaypoint; }
+
+    private AnimalAI animal;
+    public GameObject GetAnimal() { return animal.gameObject; }
+
     GameObject targetObject = null;
 
     public bool IsFollowingBoat()

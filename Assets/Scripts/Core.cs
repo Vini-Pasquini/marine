@@ -2,6 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct EnemyTaskCache
+{
+    public ENEMY_TYPE type;
+    public Vector3 position;
+    public Quaternion rotation;
+    public bool isComplete;
+
+    public EnemyTaskCache(ENEMY_TYPE type, Vector3 position, Quaternion rotation, bool isComplete)
+    {
+        this.type = type;
+        this.position = position;
+        this.rotation = rotation;
+        this.isComplete = isComplete;
+        return;
+    }
+}
+
+public struct AnimalTaskCache
+{
+    public ANIMAL_TYPE type;
+    public Vector3 position;
+    public Quaternion rotation;
+    public bool isComplete;
+
+    public AnimalTaskCache(ANIMAL_TYPE type, Vector3 position, Quaternion rotation, bool isComplete)
+    {
+        this.type = type;
+        this.position = position;
+        this.rotation = rotation;
+        this.isComplete = isComplete;
+        return;
+    }
+}
+
 public static class Core
 {
     // levelState
@@ -35,7 +69,18 @@ public static class Core
     private static float radarRange = 7f; // placeholder
     public static float GetRadarRange() { return radarRange; }
 
+    private static List<EnemyTaskCache> enemyTaskCacheList = new List<EnemyTaskCache>();
+    public static void ClearEnemyTaskCache() { enemyTaskCacheList.Clear(); }
+    public static void CacheEnemyTask(ENEMY_TYPE type, Vector3 position, Quaternion rotation, bool isComplete) { enemyTaskCacheList.Add(new EnemyTaskCache(type, position, rotation, isComplete)); }
+    public static List<EnemyTaskCache> GetEnemyTaskCacheList() { return enemyTaskCacheList; }
+
+    private static List<AnimalTaskCache> animalTaskCacheList = new List<AnimalTaskCache>();
+    public static void ClearAnimalTaskCache() { animalTaskCacheList.Clear(); }
+    public static void CacheAnimalTask(ANIMAL_TYPE type, Vector3 position, Quaternion rotation, bool isComplete) { animalTaskCacheList.Add(new AnimalTaskCache(type, position, rotation, isComplete)); }
+    public static List<AnimalTaskCache> GetAnimalTaskCacheList() { return animalTaskCacheList; }
+
     // flags
+
     private static bool playerLoadStaged = false;
     public static bool IsPlayerLoadStaged() { return playerLoadStaged; }
     public static void StagePlayerLoad(bool newValue) { playerLoadStaged = newValue; /* bugfix pro playtest */ Core.SetIsOnRescue(false); }

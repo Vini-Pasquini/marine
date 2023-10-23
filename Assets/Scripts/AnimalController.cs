@@ -15,8 +15,16 @@ public class AnimalController : MonoBehaviour
     private GameObject animalWaypoint;
     public GameObject GetAnimalWaypoint() { return animalWaypoint; }
 
+    private Vector3 waypointSatgedPosition;
+    private bool isWaypointCacheLoadStaged = false;
+    public void StageWaypointCacheLoad(Vector3 cachedPosition) { waypointSatgedPosition = cachedPosition; isWaypointCacheLoadStaged = true; }
+
     private AnimalAI animal;
-    public GameObject GetAnimal() { return animal.gameObject; }
+    public GameObject GetAnimal() { return animal != null ? animal.gameObject : null; }
+
+    private Vector3 animalSatgedPosition;
+    private bool isAnimalCacheLoadStaged = false;
+    public void StageAnimalCacheLoad(Vector3 cachedPosition) { animalSatgedPosition = cachedPosition; isAnimalCacheLoadStaged = true; }
 
     GameObject targetObject = null;
 
@@ -47,10 +55,21 @@ public class AnimalController : MonoBehaviour
         // meshrenderer.enabled = false
         /*  */
         animalWaypoint = this.transform.GetChild(0).gameObject;
+        if (isWaypointCacheLoadStaged)
+        {
+            animalWaypoint.transform.position = waypointSatgedPosition;
+            isWaypointCacheLoadStaged = false;
+        }
+
         animal = this.transform.GetChild(1).GetComponent<AnimalAI>();
         animal.SetWaypointObject(animalWaypoint);
         animal.SetAnimalSpeed(baseAnimalSpeed);
         animal.SetAnimalRotationRate(baseAnimalSpeed * .1f);
+        if (isAnimalCacheLoadStaged)
+        {
+            animal.transform.position = animalSatgedPosition;
+            isAnimalCacheLoadStaged = false;
+        }
     }
 
     private void Update()

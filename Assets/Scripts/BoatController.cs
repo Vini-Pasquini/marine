@@ -236,9 +236,10 @@ public class BoatController : MonoBehaviour
     {
         //Core.IncrementPlayerHealth(-40); // debug
         bool cacheFlag = Core.IsPlayerLoadStaged();
-        this.transform.position = cacheFlag ? Core.GetPlayerPosition() : playerSpawn.transform.position;
+        PlayerCache playerCache = Core.GetPlayerCache();
+        this.transform.position = cacheFlag ? playerCache.playerPosition : playerSpawn.transform.position;
         clickPosition = this.transform.position;
-        this.transform.rotation = cacheFlag ? Core.GetPlayerRotation() : playerSpawn.transform.rotation;
+        this.transform.rotation = cacheFlag ? playerCache.playerRotation : playerSpawn.transform.rotation;
         Core.StagePlayerLoad(false);
         return cacheFlag;
     }

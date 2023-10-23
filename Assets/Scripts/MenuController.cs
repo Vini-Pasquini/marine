@@ -25,8 +25,11 @@ public class MenuController : MonoBehaviour
     private bool CacheLevelInfo()
     {
         Transform playerTransform = GameObject.Find("PlayerBoat").transform;
-        Core.SetPlayerPosition(playerTransform.position);
-        Core.SetPlayerRotation(playerTransform.rotation);
+        if (playerTransform == null) return false;
+        Core.SetPlayerCache(new PlayerCache(playerTransform.position, playerTransform.rotation));
+
+        GameObject.FindObjectOfType<LevelManager>().CacheTasks();
+
         return true;
     }
 
@@ -40,6 +43,7 @@ public class MenuController : MonoBehaviour
         }
         if (newScene == "BattleScene") this.CacheLevelInfo();
         if (newScene.StartsWith("Level_") && currentScene.name == "BattleScene") Core.StagePlayerLoad(true); // back to level check
+        if (newScene == "LevelMap") { Core.ClearAnimalTaskCache(); Core.ClearEnemyTaskCache(); } // ph
         Core.SetLastActiveScene(currentScene.name);
         SceneManager.LoadScene(newScene);
     }
@@ -50,7 +54,7 @@ public class MenuController : MonoBehaviour
         Core.SetLastActiveScene(currentScene.name);
 
         if (nextScene.StartsWith("Level_") && currentScene.name == "BattleScene") Core.StagePlayerLoad(true); // back to level check
-        if (nextScene.StartsWith("LevelMap")) Core.SetLevelState(LEVEL_STATE.Stopped);
+        if (nextScene == "LevelMap") { Core.SetLevelState(LEVEL_STATE.Stopped); Core.ClearAnimalTaskCache(); Core.ClearEnemyTaskCache(); } // ph cache
 
         SceneManager.LoadScene(nextScene);
     }

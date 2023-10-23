@@ -2,6 +2,18 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public struct PlayerCache
+{
+    public Vector3 playerPosition;
+    public Quaternion playerRotation;
+
+    public PlayerCache(Vector3 position, Quaternion rotation)
+    {
+        this.playerPosition = position;
+        this.playerRotation = rotation;
+    }
+}
+
 public struct EnemyTaskCache
 {
     public ENEMY_TYPE type;
@@ -58,13 +70,14 @@ public static class Core
     public static void SetPlayerGold(float newValue) { playerGold = newValue; UpdateDisplays(); }
     public static void IncrementPlayerGold(float increment) { playerGold += increment; if (playerGold < 0f) playerGold = 0f; UpdateDisplays(); }
 
-    private static Vector3 playerPosition = Vector3.zero;
-    public static Vector3 GetPlayerPosition() { return playerPosition; }
-    public static void SetPlayerPosition(Vector3 position) { playerPosition = position; }
+    private static PlayerCache playerCache = new PlayerCache(Vector3.zero, Quaternion.identity);
+    public static PlayerCache GetPlayerCache() { return playerCache; }
+    public static void SetPlayerCache(PlayerCache newPlayerCache) { playerCache = newPlayerCache; }
 
-    private static Quaternion playerRotation = Quaternion.identity;
-    public static Quaternion GetPlayerRotation() { return playerRotation; }
-    public static void SetPlayerRotation(Quaternion rotation) { playerRotation = rotation; }
+    public static Vector3 GetPlayerPosition() { return playerCache.playerPosition; } // old, delete later
+    public static void SetPlayerPosition(Vector3 position) { playerCache.playerPosition = position; } // old, delete later
+    public static Quaternion GetPlayerRotation() { return playerCache.playerRotation; } // old, delete later
+    public static void SetPlayerRotation(Quaternion rotation) { playerCache.playerRotation = rotation; } // old, delete later
 
     private static float radarRange = 7f; // placeholder
     public static float GetRadarRange() { return radarRange; }
@@ -101,8 +114,7 @@ public static class Core
         playerGold = 0f;
         animalCount = 3;
         enemyCount = 3;
-        playerPosition = Vector3.zero;
-        playerRotation = Quaternion.identity;
+        playerCache = new PlayerCache(Vector3.zero, Quaternion.identity);
         currentLevelState = levelStateOverride;
     }
 

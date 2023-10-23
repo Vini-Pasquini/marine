@@ -10,7 +10,7 @@ public enum LAYERS
     RescueArea,
     Loot = 27,
     Fuel,
-    Trash,
+    Filth,
     Animal,
     Enemy,
 }

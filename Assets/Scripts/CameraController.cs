@@ -183,7 +183,7 @@ public class CameraController : MonoBehaviour
     private bool UpdateLocator(GameObject locator, GameObject target, bool markInsideViewport = false)
     {
         // test locator flip fix
-        /* EU PRECISO CORRIGIR ISSO ANTES DO PLAYTEST; SOCORRO!!!
+        /* EU PRECISO CORRIGIR ISSO< MAS TEM COISA MAIS IMPORTANTE PRA FAZEr; SOCORRO!!!
         Vector3 treco = playerBoat.transform.position - Camera.main.transform.position;
         float A = Camera.main.transform.forward.x * (Camera.main.transform.up.x - treco.x);
         float B = Camera.main.transform.forward.y * (Camera.main.transform.up.y - treco.y);

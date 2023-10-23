@@ -48,6 +48,32 @@ public struct AnimalTaskCache
     }
 }
 
+public struct FilthTaskCache
+{
+    public FILTH_TYPE type;
+    public bool isComplete;
+
+    public FilthTaskCache(FILTH_TYPE type, bool isComplete)
+    {
+        this.type = type;
+        this.isComplete = isComplete;
+        return;
+    }
+}
+
+public struct LootTaskCache
+{
+    public LOOT_TYPE type;
+    public bool isComplete;
+
+    public LootTaskCache(LOOT_TYPE type, bool isComplete)
+    {
+        this.type = type;
+        this.isComplete = isComplete;
+        return;
+    }
+}
+
 public static class Core
 {
     // levelState

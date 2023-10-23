@@ -43,6 +43,8 @@ public class BattleManager : MonoBehaviour
             hasNoEnemies = true;
             Core.IncrementEnemyCount(-1);
             Core.IncrementPlayerGold(10);
+
+            Core.SetCurrentBattleVictory();
         }
 
         //condição de derrota

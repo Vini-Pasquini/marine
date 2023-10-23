@@ -126,12 +126,15 @@ public class CameraController : MonoBehaviour
         switch (cachedHoverdObject.layer)
         {
             case (int)LAYERS.Enemy:
+                EnemyController enemyController = cachedHoverdObject.GetComponentInParent<EnemyController>();
+                if (enemyController == null || enemyController.IsTaskComplete()) break;
+                LevelManager levelMangere = GameObject.FindObjectOfType<LevelManager>();
+                if (levelMangere != null) Core.SetBattleIndex(levelMangere.GetEnemyTaskList().IndexOf(enemyController));
                 interactionMenuGrid.Find("Battle").gameObject.SetActive(true);
                 break;
             case (int)LAYERS.Animal:
                 AnimalController animalController = cachedHoverdObject.GetComponentInParent<AnimalController>();
-                if (animalController == null) break;
-                if (animalController.GetIsSafe()) break;
+                if (animalController == null || animalController.IsTaskComplete()) break;
 
                 Transform rescueButton = interactionMenuGrid.Find("Rescue"); ;
                 if (!Core.GetIsOnRescue())

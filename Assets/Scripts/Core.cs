@@ -92,6 +92,18 @@ public static class Core
     public static void CacheAnimalTask(ANIMAL_TYPE type, Vector3 position, Quaternion rotation, bool isComplete) { animalTaskCacheList.Add(new AnimalTaskCache(type, position, rotation, isComplete)); }
     public static List<AnimalTaskCache> GetAnimalTaskCacheList() { return animalTaskCacheList; }
 
+    private static int currentBattleIndex = -1;
+    public static int GetBattleIndex() { return currentBattleIndex; }
+    public static void SetBattleIndex(int newIndex) { currentBattleIndex = newIndex; }
+    public static bool SetCurrentBattleVictory()
+    {
+        if (currentBattleIndex < 0 || currentBattleIndex >= enemyTaskCacheList.Count) return false;
+        EnemyTaskCache enemyTaskCache = enemyTaskCacheList[currentBattleIndex];
+        enemyTaskCache.isComplete = true;
+        enemyTaskCacheList[currentBattleIndex] = enemyTaskCache;
+        return true;
+    }
+
     // flags
 
     private static bool playerLoadStaged = false;

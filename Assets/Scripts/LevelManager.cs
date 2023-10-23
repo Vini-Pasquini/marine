@@ -7,7 +7,10 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     private List<EnemyController> enemyTaskList;
+    public List<EnemyController> GetEnemyTaskList() { return enemyTaskList; }
+
     private List<AnimalController> animalTaskList;
+    public List<AnimalController> GetAnimalTaskList() { return animalTaskList; }
 
     private void Start()
     {

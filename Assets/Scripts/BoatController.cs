@@ -58,7 +58,7 @@ public class BoatController : MonoBehaviour
     [SerializeField] private TextMeshProUGUI overText;
     [SerializeField] private TextMeshProUGUI description;
 
-    private void EndLevel(LEVEL_STATE endState, Color screenColor)
+    public void EndLevel(LEVEL_STATE endState, Color screenColor) // ph
     {
         levelOverOverlay.GetComponent<Image>().color = screenColor;
         levelOverOverlay.SetActive(true);

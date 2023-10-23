@@ -90,7 +90,9 @@ public class AnimalController : MonoBehaviour
         RaycastHit hit;
         if (newTarget == null && Physics.Raycast((animalWaypoint.transform.position + Vector3.up), Vector3.down, out hit, Mathf.Infinity, 1 << (int)LAYERS.RescueArea))
         {
-            isSafe = true;
+            isTaskComplete = true;
+
+            isSafe = true; // old, delete later
             Core.IncrementPlayerGold(10);
             Core.IncrementAnimalCount(-1);
         }

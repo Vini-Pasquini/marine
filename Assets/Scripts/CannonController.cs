@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class CannonController : MonoBehaviour
 {
@@ -30,6 +31,7 @@ public class CannonController : MonoBehaviour
 
     private void Update()
     {
+        BlastPower = GameObject.FindGameObjectWithTag("Alavanca").GetComponent<Slider>().value;
         //BlastPower = GameObject.FindGameObjectWithTag("Alavanca").GetComponent<GearManager>().GetBulletSpeed();
 
         if (Input.GetKeyDown(KeyCode.PageDown)) { bulletsCounts -= 5; bulletDisplay.text = "AMMO:\n" + bulletsCounts.ToString(); } // DEBUG< TIRAR DPS

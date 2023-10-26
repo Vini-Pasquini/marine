@@ -78,7 +78,7 @@ public class CameraController : MonoBehaviour
 
         ObjectHighlight(); // placeholder
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && hoveredObject == null)
         {
             // camera control
             movingCamera = true;

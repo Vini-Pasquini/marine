@@ -100,6 +100,8 @@ public class BoatController : MonoBehaviour
         this.transform.rotation = Quaternion.Euler(seaLevelRotation);
     }
 
+    Vector3 bufferDirection = Vector3.zero;
+
     private void Update()
     {
         if (Core.GetLevelState() != LEVEL_STATE.Ongoing) return;
@@ -119,6 +121,26 @@ public class BoatController : MonoBehaviour
                 if (!clickMarkerRenderer.enabled) clickMarkerRenderer.enabled = true;
                 if (!clickMarkerLine.enabled) clickMarkerLine.enabled = true;
             }
+        }
+
+        if (!avoidBarrier && (Input.GetKey(KeyCode.W) || Input.GetKey(KeyCode.A) || Input.GetKey(KeyCode.S) || Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.LeftShift)))
+        {
+            if (!Input.GetKey(KeyCode.LeftShift))
+            {
+                bufferDirection = Vector3.zero;
+                bufferDirection.y += Input.GetKey(KeyCode.W) ? 1 : 0;
+                bufferDirection.x += Input.GetKey(KeyCode.A) ? -1 : 0;
+                bufferDirection.y += Input.GetKey(KeyCode.S) ? -1 : 0;
+                bufferDirection.x += Input.GetKey(KeyCode.D) ? 1 : 0;
+                bufferDirection = bufferDirection.normalized * boatBarrierRange;
+            }
+
+            clickPosition.x = this.transform.position.x + (bufferDirection.x + bufferDirection.y);
+            clickPosition.y = 0f;
+            clickPosition.z = this.transform.position.z + (bufferDirection.y - bufferDirection.x);
+
+            if (!clickMarkerRenderer.enabled) clickMarkerRenderer.enabled = true;
+            if (!clickMarkerLine.enabled) clickMarkerLine.enabled = true;
         }
 
         // other stuff
@@ -191,20 +213,19 @@ public class BoatController : MonoBehaviour
         }
     }
 
-    private float avoidSideMult = .5f;
-    private float avoidDiagMult = .75f;
+    private int debugCollidingRayIndex = -1;
 
     private void AvoidBarrier()
     {
         bool barrierHitFlag = false;
-        barrierRayList[(int)BOAT_DIRECTION.Port] = new Ray(this.transform.position, (-this.transform.right * avoidSideMult));
-        barrierRayList[(int)BOAT_DIRECTION.Port_Bow] = new Ray(this.transform.position, (-this.transform.right * avoidSideMult) + (this.transform.forward * avoidDiagMult));
+        barrierRayList[(int)BOAT_DIRECTION.Port] = new Ray(this.transform.position, (-this.transform.right));
+        barrierRayList[(int)BOAT_DIRECTION.Port_Bow] = new Ray(this.transform.position, (-this.transform.right) + (this.transform.forward));
         barrierRayList[(int)BOAT_DIRECTION.Bow] = new Ray(this.transform.position, this.transform.forward);
-        barrierRayList[(int)BOAT_DIRECTION.Starboard_Bow] = new Ray(this.transform.position, (this.transform.right * avoidSideMult) + (this.transform.forward * avoidDiagMult));
-        barrierRayList[(int)BOAT_DIRECTION.Starboard] = new Ray(this.transform.position, (this.transform.right * avoidSideMult));
-        barrierRayList[(int)BOAT_DIRECTION.Starboard_Stern] = new Ray(this.transform.position, (this.transform.right * avoidSideMult) - (this.transform.forward * avoidDiagMult));
+        barrierRayList[(int)BOAT_DIRECTION.Starboard_Bow] = new Ray(this.transform.position, (this.transform.right) + (this.transform.forward));
+        barrierRayList[(int)BOAT_DIRECTION.Starboard] = new Ray(this.transform.position, (this.transform.right));
+        barrierRayList[(int)BOAT_DIRECTION.Starboard_Stern] = new Ray(this.transform.position, (this.transform.right) - (this.transform.forward));
         barrierRayList[(int)BOAT_DIRECTION.Stern] = new Ray(this.transform.position, -this.transform.forward);
-        barrierRayList[(int)BOAT_DIRECTION.Port_Stern] = new Ray(this.transform.position, (-this.transform.right * avoidSideMult) - (this.transform.forward * avoidDiagMult));
+        barrierRayList[(int)BOAT_DIRECTION.Port_Stern] = new Ray(this.transform.position, (-this.transform.right) - (this.transform.forward));
 
         int hitIndex = 0;
         for (int index = 0; index < (int)BOAT_DIRECTION._COUNT; index++)
@@ -214,6 +235,7 @@ public class BoatController : MonoBehaviour
                 barrierHitFlag = true;
                 avoidBarrier = true;
                 hitIndex = index;
+                debugCollidingRayIndex = index;
                 break;
             }
         }
@@ -252,13 +274,14 @@ public class BoatController : MonoBehaviour
 
     private void DebugDrawBarrierCollisionRays()
     {
-        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.right * avoidSideMult) * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + ((-this.transform.right * avoidSideMult) + (this.transform.forward * avoidDiagMult)) * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.forward) * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + ((this.transform.right * avoidSideMult) + (this.transform.forward * avoidDiagMult)) * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.right * avoidSideMult) * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + ((this.transform.right * avoidSideMult) - (this.transform.forward * avoidDiagMult)) * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.forward) * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + ((-this.transform.right * avoidSideMult) - (this.transform.forward * avoidDiagMult)) * boatBarrierRange);
+        if (!avoidBarrier) debugCollidingRayIndex = -1;
+        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.right).normalized * boatBarrierRange, debugCollidingRayIndex == 0 ? Color.red : Color.green);
+        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.right + this.transform.forward).normalized * boatBarrierRange, debugCollidingRayIndex == 1 ? Color.red : Color.green);
+        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.forward).normalized * boatBarrierRange, debugCollidingRayIndex == 2 ? Color.red : Color.green);
+        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.right + this.transform.forward).normalized * boatBarrierRange, debugCollidingRayIndex == 3 ? Color.red : Color.green);
+        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.right).normalized * boatBarrierRange, debugCollidingRayIndex == 4 ? Color.red : Color.green);
+        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.right - this.transform.forward).normalized * boatBarrierRange, debugCollidingRayIndex == 5 ? Color.red : Color.green);
+        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.forward).normalized * boatBarrierRange, debugCollidingRayIndex == 6 ? Color.red : Color.green);
+        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.right - this.transform.forward).normalized * boatBarrierRange, debugCollidingRayIndex == 7 ? Color.red : Color.green);
     }
 }

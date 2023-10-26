@@ -11,7 +11,8 @@ public class CameraController : MonoBehaviour
     [SerializeField] private GameObject playerBoat;
     private bool lockOnPlayer;
 
-    private bool movingCamera;
+    private bool mouseMovingCamera;
+    private bool keyboardMovingCamera;
     private Vector3 clickPosition;
     private Vector3 anchorPosition;
     private float cameraSpeed = .015f;
@@ -57,66 +58,106 @@ public class CameraController : MonoBehaviour
         return cachedHoverdObject;
     }
 
-    private float scrollSpeed = 1000f; // placeholder
+    private float mouseZoomSpeed = 1000f; // placeholder
+    private float keyboardZoomSpeed = 100f; // ph
     private float minCameraDistance = 10f; // placeholder
     private float maxCameraDistance = 100f; // placeholder
 
+    private float keyboardCameraSpeedMultiplier = 1.5f;
 
     private void Update()
     {
         if (Core.GetLevelState() != LEVEL_STATE.Ongoing) return;
 
-        float cameraRigScale = this.transform.localScale.x;
-        float cameraRigScrollDelta = (Input.mouseScrollDelta.y * Time.deltaTime) * scrollSpeed;
-        cameraRigScale = Mathf.Max(minCameraDistance, Mathf.Min(maxCameraDistance, cameraRigScale - cameraRigScrollDelta));
-        this.transform.localScale = Vector3.one * cameraRigScale;
+        ObjectHighlight();
 
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            lockOnPlayer = !lockOnPlayer;
-        }
+        CameraInput();
+        CameraMovement();
 
-        ObjectHighlight(); // placeholder
+        UpdateLocator(boatLocator, playerBoat);
+        UpdateLocator(enemyLocator, enemyLocatorTarget, true);
+        UpdateLocator(animalLocator, animalLocatorTarget, true);
+        UpdateLocator(fuelLocator, fuelLocatorTarget, true);
+    }
 
+    private float cameraRigScale = 1f;
+    private float cameraRigScrollDelta = 0f;
+
+    private Vector3 cameraMovementDirection = Vector3.zero;
+
+    private void CameraInput()
+    {
+        /* Camera Lock */
+        if (Input.GetKeyDown(KeyCode.F) || Input.GetKeyDown(KeyCode.Mouse2)) { lockOnPlayer = !lockOnPlayer; }
+
+        /* Camera Zoom */
+        cameraRigScrollDelta = Input.GetKey(KeyCode.Q) ? (-Time.deltaTime * keyboardZoomSpeed) : Input.GetKey(KeyCode.E) ? (Time.deltaTime * keyboardZoomSpeed) : ((Input.mouseScrollDelta.y * Time.deltaTime) * mouseZoomSpeed);
+
+        /* Camera Movement + Interaction */
+        // mouse input
         if (Input.GetKeyDown(KeyCode.Mouse0) && hoveredObject == null)
         {
             // camera control
-            movingCamera = true;
+            mouseMovingCamera = true;
             clickPosition = Input.mousePosition;
             anchorPosition = this.transform.position;
         }
         if (Input.GetKeyUp(KeyCode.Mouse0))
         {
             // camera control
-            movingCamera = false;
+            mouseMovingCamera = false;
             anchorPosition.y = 0f;
             // object interaction
             InteractionHandler();
         }
+        // keyboard input (change to axis later)
+        keyboardCameraSpeedMultiplier = Input.GetKey(KeyCode.RightShift) ? 3f : 1.5f;
+        keyboardMovingCamera = Input.GetKey(KeyCode.UpArrow) || Input.GetKey(KeyCode.LeftArrow) || Input.GetKey(KeyCode.DownArrow) || Input.GetKey(KeyCode.RightArrow);
+        if (!keyboardMovingCamera) return;
+        cameraMovementDirection = Vector3.zero;
+        cameraMovementDirection.y += Input.GetKey(KeyCode.UpArrow) ? 1 : 0;
+        cameraMovementDirection.x += Input.GetKey(KeyCode.LeftArrow) ? -1 : 0;
+        cameraMovementDirection.y += Input.GetKey(KeyCode.DownArrow) ? -1 : 0;
+        cameraMovementDirection.x += Input.GetKey(KeyCode.RightArrow) ? 1 : 0;
+    }
 
-        cameraSpeed = cameraRigScale / 1500f;
+    private void CameraMovement()
+    {
+        // camera zoom
+        cameraRigScale = this.transform.localScale.x;
+        cameraRigScale = Mathf.Max(minCameraDistance, Mathf.Min(maxCameraDistance, cameraRigScale - cameraRigScrollDelta));
+        this.transform.localScale = Vector3.one * cameraRigScale;
 
-        if (!lockOnPlayer)
-        {
-            if (movingCamera)
-            {
-                Vector3 cameraMovementDelta = clickPosition - Input.mousePosition;
-                Vector3 currentPosition = this.transform.position;
-                currentPosition.x = (cameraMovementDelta.x + cameraMovementDelta.y) * (cameraSpeed);
-                currentPosition.y = 0f;
-                currentPosition.z = (cameraMovementDelta.y - cameraMovementDelta.x) * (cameraSpeed);
-                this.transform.localPosition = anchorPosition + currentPosition;
-            }
-        }
-        else
+        // camera lock
+        if (lockOnPlayer)
         {
             this.transform.position = playerBoat.transform.position;
+            return;
         }
 
-        UpdateLocator(boatLocator, playerBoat);
-        UpdateLocator(enemyLocator, enemyLocatorTarget, true);
-        UpdateLocator(animalLocator, animalLocatorTarget, true);
-        UpdateLocator(fuelLocator, fuelLocatorTarget, true);
+        // camera movement
+        cameraSpeed = cameraRigScale / 1500f;
+
+        if (mouseMovingCamera)
+        {
+            Vector3 cameraMovementDelta = clickPosition - Input.mousePosition;
+            Vector3 currentPosition = this.transform.position;
+            currentPosition.x = (cameraMovementDelta.x + cameraMovementDelta.y) * (cameraSpeed);
+            currentPosition.y = 0f;
+            currentPosition.z = (cameraMovementDelta.y - cameraMovementDelta.x) * (cameraSpeed);
+            this.transform.localPosition = anchorPosition + currentPosition;
+        }
+
+        if (keyboardMovingCamera)
+        {
+            float keyboardCameraSpeed = cameraSpeed * keyboardCameraSpeedMultiplier;
+
+            Vector3 currentPosition = this.transform.position;
+            currentPosition.x += (cameraMovementDirection.x + cameraMovementDirection.y) * (keyboardCameraSpeed);
+            currentPosition.y = 0f;
+            currentPosition.z += (cameraMovementDirection.y - cameraMovementDirection.x) * (keyboardCameraSpeed);
+            this.transform.localPosition = currentPosition;
+        }
     }
 
     private void InteractionHandler()

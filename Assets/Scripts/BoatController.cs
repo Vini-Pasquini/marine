@@ -191,17 +191,20 @@ public class BoatController : MonoBehaviour
         }
     }
 
+    private float avoidSideMult = .5f;
+    private float avoidDiagMult = .75f;
+
     private void AvoidBarrier()
     {
         bool barrierHitFlag = false;
-        barrierRayList[(int)BOAT_DIRECTION.Port] = new Ray(this.transform.position, -this.transform.right);
-        barrierRayList[(int)BOAT_DIRECTION.Port_Bow] = new Ray(this.transform.position, -this.transform.right + this.transform.forward);
+        barrierRayList[(int)BOAT_DIRECTION.Port] = new Ray(this.transform.position, (-this.transform.right * avoidSideMult));
+        barrierRayList[(int)BOAT_DIRECTION.Port_Bow] = new Ray(this.transform.position, (-this.transform.right * avoidSideMult) + (this.transform.forward * avoidDiagMult));
         barrierRayList[(int)BOAT_DIRECTION.Bow] = new Ray(this.transform.position, this.transform.forward);
-        barrierRayList[(int)BOAT_DIRECTION.Starboard_Bow] = new Ray(this.transform.position, this.transform.right + this.transform.forward);
-        barrierRayList[(int)BOAT_DIRECTION.Starboard] = new Ray(this.transform.position, this.transform.right);
-        barrierRayList[(int)BOAT_DIRECTION.Starboard_Stern] = new Ray(this.transform.position, this.transform.right - this.transform.forward);
-        barrierRayList[(int)BOAT_DIRECTION.Stern] = new Ray(this.transform.position, - this.transform.forward);
-        barrierRayList[(int)BOAT_DIRECTION.Port_Stern] = new Ray(this.transform.position, - this.transform.right - this.transform.forward);
+        barrierRayList[(int)BOAT_DIRECTION.Starboard_Bow] = new Ray(this.transform.position, (this.transform.right * avoidSideMult) + (this.transform.forward * avoidDiagMult));
+        barrierRayList[(int)BOAT_DIRECTION.Starboard] = new Ray(this.transform.position, (this.transform.right * avoidSideMult));
+        barrierRayList[(int)BOAT_DIRECTION.Starboard_Stern] = new Ray(this.transform.position, (this.transform.right * avoidSideMult) - (this.transform.forward * avoidDiagMult));
+        barrierRayList[(int)BOAT_DIRECTION.Stern] = new Ray(this.transform.position, -this.transform.forward);
+        barrierRayList[(int)BOAT_DIRECTION.Port_Stern] = new Ray(this.transform.position, (-this.transform.right * avoidSideMult) - (this.transform.forward * avoidDiagMult));
 
         int hitIndex = 0;
         for (int index = 0; index < (int)BOAT_DIRECTION._COUNT; index++)
@@ -210,6 +213,7 @@ public class BoatController : MonoBehaviour
             {
                 barrierHitFlag = true;
                 avoidBarrier = true;
+                hitIndex = index;
                 break;
             }
         }
@@ -248,13 +252,13 @@ public class BoatController : MonoBehaviour
 
     private void DebugDrawBarrierCollisionRays()
     {
-        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.right).normalized * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.right + this.transform.forward).normalized * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.forward).normalized * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.right + this.transform.forward).normalized * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.right).normalized * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.right - this.transform.forward).normalized * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.forward).normalized * boatBarrierRange);
-        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.right - this.transform.forward).normalized * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.right * avoidSideMult) * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + ((-this.transform.right * avoidSideMult) + (this.transform.forward * avoidDiagMult)) * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.forward) * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + ((this.transform.right * avoidSideMult) + (this.transform.forward * avoidDiagMult)) * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + (this.transform.right * avoidSideMult) * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + ((this.transform.right * avoidSideMult) - (this.transform.forward * avoidDiagMult)) * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + (-this.transform.forward) * boatBarrierRange);
+        Debug.DrawLine(this.transform.position, this.transform.position + ((-this.transform.right * avoidSideMult) - (this.transform.forward * avoidDiagMult)) * boatBarrierRange);
     }
 }

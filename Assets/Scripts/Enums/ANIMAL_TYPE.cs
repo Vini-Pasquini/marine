@@ -1,7 +1,8 @@
 public enum ANIMAL_TYPE
 {
     Dolphin,
-    Blue_Whale,
+    BlueWhale,
+    HumpbackWhale,
     Shark,
     _COUNT,
 }

@@ -44,15 +44,19 @@ public class AnimalController : MonoBehaviour
 
     private void Start()
     {
+        Transform animalGameObject = this.transform.GetChild(1);
+        Transform animalModelGameObject = animalGameObject.GetChild(0);
+        Transform animalHighlightGameObject = animalGameObject.GetChild(1);
         /* animal init */
-        // select animal type ()
-        // load animal model
-        // apply convex mesh collider
+        animalType = (ANIMAL_TYPE)Random.Range(0, (int)ANIMAL_TYPE._COUNT);
+        GameObject animalModel = GameObject.Instantiate((GameObject)Resources.Load($"Models/Animals/{animalType}Model"));
+        animalModel.transform.SetParent(animalModelGameObject, false);
+        animalModel.transform.localPosition = Vector3.zero;
         /* animal highlight init */
-        // dup model mesh as animal highlight
-        // set animal highlight to "animal" layer
-        // change material to SelectionHighlightMat
-        // meshrenderer.enabled = false
+        animalHighlightGameObject.rotation = animalModel.transform.rotation;
+        Mesh animalMesh = animalModel.GetComponent<MeshFilter>().mesh;
+        animalHighlightGameObject.GetComponent<MeshFilter>().mesh = animalMesh;
+        animalHighlightGameObject.GetComponent<MeshCollider>().sharedMesh = animalMesh;
         /*  */
         animalWaypoint = this.transform.GetChild(0).gameObject;
         if (isWaypointCacheLoadStaged)

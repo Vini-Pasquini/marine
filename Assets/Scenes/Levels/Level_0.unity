@@ -5164,7 +5164,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 1}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0.000061035156, y: 0}
+  m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 800, y: 130}
   m_Pivot: {x: 0, y: 1}
 --- !u!114 &1890530564
@@ -6135,6 +6135,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 6442644044600550368, guid: 9e65719e1646ea94183ed0ea8561fdaf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6442644044646128756, guid: 9e65719e1646ea94183ed0ea8561fdaf, type: 3}
       propertyPath: m_Name
       value: AnimalSpawner
@@ -6181,6 +6185,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6442644044646128776, guid: 9e65719e1646ea94183ed0ea8561fdaf, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837141407132928993, guid: 9e65719e1646ea94183ed0ea8561fdaf, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

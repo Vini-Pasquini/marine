@@ -608,7 +608,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &130681446
@@ -1173,7 +1173,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &398628956
@@ -1442,7 +1442,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &476423144
@@ -1576,7 +1576,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &482390212
@@ -1710,7 +1710,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &500213093
@@ -1979,7 +1979,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &669468265
@@ -2113,7 +2113,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &687459639
@@ -2247,7 +2247,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &706835385
@@ -3350,7 +3350,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1282765326
@@ -3484,7 +3484,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1297307499
@@ -4132,7 +4132,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1748654148
@@ -4388,7 +4388,7 @@ MonoBehaviour:
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
           m_FloatArgument: 0
-          m_StringArgument: Bestiary2
+          m_StringArgument: BestiaryAnimalPage
           m_BoolArgument: 0
         m_CallState: 2
 --- !u!114 &1883602436

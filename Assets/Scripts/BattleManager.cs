@@ -56,7 +56,7 @@ public class BattleManager : MonoBehaviour
 
         if (hasNoEnemies || playerLost)
         {
-            GameObject.Find("EventSystem").GetComponent<MenuController>().OnChangeSceneButtonPress(Core.GetLastActiveScene());
+            GameObject.Find("EventSystem").GetComponent<MenuController>().OnChangeSceneButtonPress(Core.GetLastActiveScene().ToString());
         }
     }
 

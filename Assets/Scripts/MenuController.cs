@@ -10,7 +10,7 @@ public class MenuController : MonoBehaviour
 
     private void Awake()
     {
-        if (SceneManager.GetActiveScene().name == "MainMenu") // game initialization check
+        if (SceneManager.GetActiveScene().name == SCENES.MainMenu.ToString()) // game initialization check
         {
             Screen.SetResolution(1600, 900, false);
             Core.Reset();
@@ -33,30 +33,31 @@ public class MenuController : MonoBehaviour
         return true;
     }
 
-    public void OnChangeSceneButtonPress(string newScene)
+    public void OnChangeSceneButtonPress(string scene)
     {
-        if (currentScene.name == "LevelMap")
+        SCENES newScene = (SCENES)Enum.Parse(typeof(SCENES), scene);
+        if (currentScene.name == SCENES.LevelMap.ToString())
         {
             Core.SetLevelState(LEVEL_STATE.Stopped);
             // new level check
-            if (newScene.StartsWith("Level_")) Core.Reset(levelStateOverride: LEVEL_STATE.Ongoing);
+            if (newScene.ToString().StartsWith("Level_")) Core.Reset(levelStateOverride: LEVEL_STATE.Ongoing);
         }
-        if (newScene == "BattleScene") this.CacheLevelInfo();
-        if (newScene.StartsWith("Level_") && currentScene.name == "BattleScene") Core.StagePlayerLoad(true); // back to level check
-        if (newScene == "LevelMap") { Core.ClearAnimalTaskCache(); Core.ClearEnemyTaskCache(); } // ph
-        Core.SetLastActiveScene(currentScene.name);
-        SceneManager.LoadScene(newScene);
+        if (newScene == SCENES.BattleScene) this.CacheLevelInfo();
+        if (newScene.ToString().StartsWith("Level_") && currentScene.name == SCENES.BattleScene.ToString()) Core.StagePlayerLoad(true); // back to level check
+        if (newScene == SCENES.LevelMap) { Core.ClearAnimalTaskCache(); Core.ClearEnemyTaskCache(); } // ph
+        Core.SetLastActiveScene((SCENES)Enum.Parse(typeof(SCENES), currentScene.name));
+        SceneManager.LoadScene(newScene.ToString());
     }
 
     public void OnBackButtonPress()
     {
-        string nextScene = Core.GetLastActiveScene();
-        Core.SetLastActiveScene(currentScene.name);
+        SCENES lastScene = Core.GetLastActiveScene();
+        Core.SetLastActiveScene((SCENES)Enum.Parse(typeof(SCENES), currentScene.name));
 
-        if (nextScene.StartsWith("Level_") && currentScene.name == "BattleScene") Core.StagePlayerLoad(true); // back to level check
-        if (nextScene == "LevelMap") { Core.SetLevelState(LEVEL_STATE.Stopped); Core.ClearAnimalTaskCache(); Core.ClearEnemyTaskCache(); } // ph cache
+        if (lastScene.ToString().StartsWith("Level_") && currentScene.name == SCENES.BattleScene.ToString()) Core.StagePlayerLoad(true); // back to level check
+        if (lastScene == SCENES.LevelMap) { Core.SetLevelState(LEVEL_STATE.Stopped); Core.ClearAnimalTaskCache(); Core.ClearEnemyTaskCache(); } // ph cache
 
-        SceneManager.LoadScene(nextScene);
+        SceneManager.LoadScene(lastScene.ToString());
     }
 
     public void OnRescueButtonPress()

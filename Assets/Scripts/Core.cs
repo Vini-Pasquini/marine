@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -141,9 +142,9 @@ public static class Core
     public static void SetIsOnRescue(bool newValue) { isOnRescue = newValue; }
 
     // gameState
-    private static string lastActiveSceneName = null;
-    public static string GetLastActiveScene() { return lastActiveSceneName; }
-    public static void SetLastActiveScene(string sceneName) { lastActiveSceneName = sceneName; }
+    private static SCENES lastActiveScene = SCENES.MainMenu;
+    public static SCENES GetLastActiveScene() { return lastActiveScene; }
+    public static void SetLastActiveScene(SCENES scene) { lastActiveScene = scene; }
 
     public static void Reset(LEVEL_STATE levelStateOverride = LEVEL_STATE.Stopped)
     {

@@ -30,9 +30,9 @@ public class BoatController : MonoBehaviour
     private float boatBarrierRange = 5f;
     private bool avoidBarrier = false;
     // GUI
-    [SerializeField] private GameObject levelOverOverlay;
 
     private GameObject playerSpawn;
+    private LevelManager levelManeger;
     private GameObject radarThingy;
 
     private void Start()
@@ -40,6 +40,7 @@ public class BoatController : MonoBehaviour
         radarThingy = GameObject.Find("Radar");
         // spawn
         playerSpawn = GameObject.Find("PlayerSpawn");
+        levelManeger = playerSpawn.GetComponent<LevelManager>();
         // barrier init
         barrierRayList = new Ray[(int)BOAT_DIRECTION._COUNT];
         barrierHitInfo = new RaycastHit[(int)BOAT_DIRECTION._COUNT];
@@ -55,33 +56,12 @@ public class BoatController : MonoBehaviour
         Core.UpdateDisplays();
     }
 
-    [SerializeField] private TextMeshProUGUI overText;
-    [SerializeField] private TextMeshProUGUI description;
-
     public void EndLevel(LEVEL_STATE endState, Color screenColor) // ph
     {
-        levelOverOverlay.GetComponent<Image>().color = screenColor;
-        levelOverOverlay.SetActive(true);
-        Core.SetLevelState(endState);
         playerBody.velocity = Vector3.zero;
         clickMarkerRenderer.enabled = false;
         clickMarkerLine.enabled = false;
-        overText.text = (endState == LEVEL_STATE.Success ? "VOCE GANHOU" : "VOCE PERDEU");
-        switch(endState)
-        {
-            case LEVEL_STATE.Success:
-                description.text = "Voce salvou todos os Animais e derrotou todos os Cacadores";
-                break;
-            case LEVEL_STATE.FuelFail:
-                description.text = "Acabou seu combustível, voce ficou à deriva! :v";
-                break;
-            case LEVEL_STATE.HealthFail:
-                description.text = "Seu barco afundou, voce morreu afogado(a)! :c";
-                break;
-            default:
-                description.text = "COMO VOCE CHEGOU AKI? NAO ERA PRA SER POSSIVEL VOCE LER ISSO!!!!!";
-                break;
-        }
+        levelManeger.DisplayLevelOverScreen(endState, screenColor);
     }
 
     Vector3 seaLevelPosition = Vector3.zero;
@@ -168,7 +148,6 @@ public class BoatController : MonoBehaviour
             LEVEL_STATE endState = (currentFuel <= 0f && currentHealth > 0f ? LEVEL_STATE.FuelFail : (currentHealth <= 0f && currentFuel > 0f ? LEVEL_STATE.HealthFail : LEVEL_STATE.Stopped));
             Color screenColor = (currentFuel <= 0f && currentHealth > 0f ? new Color(1f, 1f, 0f, .5f) : (currentHealth <= 0f && currentFuel > 0f ? new Color(1f, 0f, 0f, .5f) : new Color(0f, 1f, 1f, .5f)));
             this.EndLevel(endState, screenColor);
-            levelOverOverlay.SetActive(true);
         }
 
         // click marker line renderer

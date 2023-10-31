@@ -2,7 +2,10 @@ using JetBrains.Annotations;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LevelManager : MonoBehaviour
 {
@@ -11,6 +14,11 @@ public class LevelManager : MonoBehaviour
 
     private List<AnimalController> animalTaskList;
     public List<AnimalController> GetAnimalTaskList() { return animalTaskList; }
+
+    // placeholder
+    [SerializeField] private GameObject levelOverOverlay;
+    [SerializeField] private TextMeshProUGUI overText;
+    [SerializeField] private TextMeshProUGUI description;
 
     private void Start()
     {
@@ -88,6 +96,29 @@ public class LevelManager : MonoBehaviour
         {
             GameObject animalWaypoint = animalTask.GetAnimalWaypoint();
             Core.CacheAnimalTask(animalTask.GetAnimalType(), animalWaypoint == null ? animalTask.transform.position : animalWaypoint.transform.position, animalTask.transform.rotation, animalTask.IsTaskComplete());
+        }
+    }
+
+    public void DisplayLevelOverScreen(LEVEL_STATE endState, Color screenColor)
+    {
+        levelOverOverlay.GetComponent<Image>().color = screenColor;
+        levelOverOverlay.SetActive(true);
+        Core.SetLevelState(endState);
+        overText.text = (endState == LEVEL_STATE.Success ? "VOCE GANHOU" : "VOCE PERDEU");
+        switch (endState)
+        {
+            case LEVEL_STATE.Success:
+                description.text = "Voce salvou todos os Animais e derrotou todos os Cacadores";
+                break;
+            case LEVEL_STATE.FuelFail:
+                description.text = "Acabou seu combustível, voce ficou à deriva! :v";
+                break;
+            case LEVEL_STATE.HealthFail:
+                description.text = "Seu barco afundou, voce morreu afogado(a)! :c";
+                break;
+            default:
+                description.text = "COMO VOCE CHEGOU AKI? NAO ERA PRA SER POSSIVEL VOCE LER ISSO!!!!!";
+                break;
         }
     }
 }

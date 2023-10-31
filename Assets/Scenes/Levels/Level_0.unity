@@ -6063,6 +6063,18 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerSpawn
       objectReference: {fileID: 0}
+    - target: {fileID: 2224500023224454459, guid: afe0b54b264a6e84e8824541af544ef1, type: 3}
+      propertyPath: overText
+      value: 
+      objectReference: {fileID: 589261693}
+    - target: {fileID: 2224500023224454459, guid: afe0b54b264a6e84e8824541af544ef1, type: 3}
+      propertyPath: description
+      value: 
+      objectReference: {fileID: 430954097}
+    - target: {fileID: 2224500023224454459, guid: afe0b54b264a6e84e8824541af544ef1, type: 3}
+      propertyPath: levelOverOverlay
+      value: 
+      objectReference: {fileID: 1565144725}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: afe0b54b264a6e84e8824541af544ef1, type: 3}
 --- !u!1001 &4689228705092999524

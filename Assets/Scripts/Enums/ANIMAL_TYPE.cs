@@ -1,5 +1,6 @@
 public enum ANIMAL_TYPE
 {
+    _NoType,
     /* common */
     _COMMON,
     HumpbackWhale,      // baleia jubarte

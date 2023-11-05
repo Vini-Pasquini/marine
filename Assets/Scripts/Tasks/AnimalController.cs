@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class AnimalController : MonoBehaviour
 {
-    private ANIMAL_TYPE animalType;
+    private ANIMAL_TYPE animalType = ANIMAL_TYPE._NoType;
     public ANIMAL_TYPE GetAnimalType() { return animalType; }
     public void SetAnimalType(ANIMAL_TYPE newType) { animalType = newType; }
 
@@ -15,16 +15,8 @@ public class AnimalController : MonoBehaviour
     private GameObject animalWaypoint;
     public GameObject GetAnimalWaypoint() { return animalWaypoint; }
 
-    private Vector3 waypointSatgedPosition;
-    private bool isWaypointCacheLoadStaged = false;
-    public void StageWaypointCacheLoad(Vector3 cachedPosition) { waypointSatgedPosition = cachedPosition; isWaypointCacheLoadStaged = true; }
-
     private AnimalAI animal;
-    public GameObject GetAnimal() { return animal != null ? animal.gameObject : null; }
-
-    private Vector3 animalSatgedPosition;
-    private bool isAnimalCacheLoadStaged = false;
-    public void StageAnimalCacheLoad(Vector3 cachedPosition) { animalSatgedPosition = cachedPosition; isAnimalCacheLoadStaged = true; }
+    public GameObject GetAnimal() { return animal.gameObject; }
 
     GameObject targetObject = null;
 
@@ -42,13 +34,22 @@ public class AnimalController : MonoBehaviour
         return isSafe;
     }
 
-    private void Start()
+    public void AnimalTaskInit()
     {
+        animalWaypoint = this.transform.GetChild(0).gameObject;
+        animal = this.transform.GetChild(1).GetComponent<AnimalAI>();
+        animal.SetWaypointObject(animalWaypoint);
+        animal.SetAnimalSpeed(baseAnimalSpeed);
+        animal.SetAnimalRotationRate(baseAnimalSpeed * .1f);
+    }
+
+    public void LoadAnimal()
+    {
+        SelectAnimalType();
         Transform animalGameObject = this.transform.GetChild(1);
         Transform animalModelGameObject = animalGameObject.GetChild(0);
         Transform animalHighlightGameObject = animalGameObject.GetChild(1);
-        /* animal init */
-        animalType = (ANIMAL_TYPE)Random.Range(1 + (int)ANIMAL_TYPE._COMMON, (int)ANIMAL_TYPE._COMMON_END);
+        /* animal model init */
         GameObject animalModel = GameObject.Instantiate((GameObject)Resources.Load($"Models/Animals/{animalType}Model"));
         animalModel.transform.SetParent(animalModelGameObject, false);
         animalModel.transform.localPosition = Vector3.zero;
@@ -60,23 +61,12 @@ public class AnimalController : MonoBehaviour
         Mesh animalMesh = animalModel.GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh;
         animalHighlightGameObject.GetComponent<MeshFilter>().mesh = animalMesh;
         animalHighlightGameObject.GetComponent<MeshCollider>().sharedMesh = animalMesh;
-        /*  */
-        animalWaypoint = this.transform.GetChild(0).gameObject;
-        if (isWaypointCacheLoadStaged)
-        {
-            animalWaypoint.transform.position = waypointSatgedPosition;
-            isWaypointCacheLoadStaged = false;
-        }
+    }
 
-        animal = this.transform.GetChild(1).GetComponent<AnimalAI>();
-        animal.SetWaypointObject(animalWaypoint);
-        animal.SetAnimalSpeed(baseAnimalSpeed);
-        animal.SetAnimalRotationRate(baseAnimalSpeed * .1f);
-        if (isAnimalCacheLoadStaged)
-        {
-            animal.transform.position = animalSatgedPosition;
-            isAnimalCacheLoadStaged = false;
-        }
+    private void SelectAnimalType()
+    {
+        if (animalType != ANIMAL_TYPE._NoType) return;
+        animalType = (ANIMAL_TYPE)Random.Range(1 + (int)ANIMAL_TYPE._COMMON, (int)ANIMAL_TYPE._COMMON_END);
     }
 
     private void Update()

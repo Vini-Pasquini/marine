@@ -25,7 +25,18 @@ public class LevelManager : MonoBehaviour
         enemyTaskList = FindObjectsOfType<EnemyController>().ToList();
         animalTaskList = FindObjectsOfType<AnimalController>().ToList();
 
+        foreach (AnimalController animalTask in animalTaskList)
+        {
+            animalTask.AnimalTaskInit();
+        }
+
         LoadTaskCache();
+
+        foreach (AnimalController animalTask in animalTaskList)
+        {
+            animalTask.LoadAnimal();
+        }
+
         CacheTasks();
     }
 
@@ -60,11 +71,9 @@ public class LevelManager : MonoBehaviour
             int currentIndex = animalTaskList.IndexOf(animalTask);
             Debug.Log($"Animal {currentIndex}");
             GameObject animalWaypoint = animalTask.GetAnimalWaypoint();
-            if (animalWaypoint != null) animalWaypoint.transform.position = animalTaskCacheList[currentIndex].position;
-            else animalTask.StageWaypointCacheLoad(animalTaskCacheList[currentIndex].position);
+            animalWaypoint.transform.position = animalTaskCacheList[currentIndex].position;
             GameObject animal = animalTask.GetAnimal();
-            if (animal != null) animal.transform.position = animalTaskCacheList[currentIndex].position;
-            else animalTask.StageAnimalCacheLoad(animalTaskCacheList[currentIndex].position);
+            animal.transform.position = animalTaskCacheList[currentIndex].position;
             //animalTask.transform.rotation = animalTaskCacheList[currentIndex].rotation;
             animalTask.SetAnimalType(animalTaskCacheList[currentIndex].type);
             animalTask.SetTaskComplete(animalTaskCacheList[currentIndex].isComplete);
@@ -111,7 +120,7 @@ public class LevelManager : MonoBehaviour
                 description.text = "Voce salvou todos os Animais e derrotou todos os Cacadores";
                 break;
             case LEVEL_STATE.FuelFail:
-                description.text = "Acabou seu combustível, voce ficou à deriva! :v";
+                description.text = "Acabou seu combustavel, voce ficou aa deriva! :v";
                 break;
             case LEVEL_STATE.HealthFail:
                 description.text = "Seu barco afundou, voce morreu afogado(a)! :c";

@@ -12,7 +12,7 @@ public class MenuController : MonoBehaviour
     {
         if (SceneManager.GetActiveScene().name == SCENES.MainMenu.ToString()) // game initialization check
         {
-            Screen.SetResolution(1600, 900, false);
+            //Screen.SetResolution(1600, 900, false);
             Core.Reset();
         }
     }

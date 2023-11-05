@@ -48,13 +48,16 @@ public class AnimalController : MonoBehaviour
         Transform animalModelGameObject = animalGameObject.GetChild(0);
         Transform animalHighlightGameObject = animalGameObject.GetChild(1);
         /* animal init */
-        animalType = (ANIMAL_TYPE)Random.Range(0, (int)ANIMAL_TYPE._COUNT);
+        animalType = (ANIMAL_TYPE)Random.Range(1 + (int)ANIMAL_TYPE._COMMON, (int)ANIMAL_TYPE._COMMON_END);
         GameObject animalModel = GameObject.Instantiate((GameObject)Resources.Load($"Models/Animals/{animalType}Model"));
         animalModel.transform.SetParent(animalModelGameObject, false);
         animalModel.transform.localPosition = Vector3.zero;
+        animalModel.GetComponent<Animator>().runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load($"Animation/{animalType}Anim");
         /* animal highlight init */
-        animalHighlightGameObject.rotation = animalModel.transform.rotation;
-        Mesh animalMesh = animalModel.GetComponent<MeshFilter>().mesh;
+        Transform animalModelTransform = animalModel.transform.GetChild(1);
+        animalHighlightGameObject.position = animalModelTransform.position;
+        animalHighlightGameObject.rotation = animalModelTransform.rotation;
+        Mesh animalMesh = animalModel.GetComponentInChildren<SkinnedMeshRenderer>().sharedMesh;
         animalHighlightGameObject.GetComponent<MeshFilter>().mesh = animalMesh;
         animalHighlightGameObject.GetComponent<MeshCollider>().sharedMesh = animalMesh;
         /*  */

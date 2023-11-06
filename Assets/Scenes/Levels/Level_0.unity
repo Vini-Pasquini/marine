@@ -6141,6 +6141,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1477553770449514153, guid: 410ee30be30d6ea4b95d6c88d0d6f03d, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5177015465396665368, guid: 410ee30be30d6ea4b95d6c88d0d6f03d, type: 3}
       propertyPath: m_Name
       value: PlayerBoat
@@ -6201,7 +6205,8 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 2446515623082261277, guid: 410ee30be30d6ea4b95d6c88d0d6f03d, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 410ee30be30d6ea4b95d6c88d0d6f03d, type: 3}
 --- !u!1001 &6442644044956588043
 PrefabInstance:

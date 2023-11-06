@@ -49,7 +49,7 @@ public class LevelManager : MonoBehaviour
     private void LoadEnemyTaskCache()
     {
         List<EnemyTaskCache> enemyTaskCacheList = Core.GetEnemyTaskCacheList();
-        if (enemyTaskCacheList.Count == 0) { Debug.Log($"enemyTaskCacheList.Count == {enemyTaskCacheList.Count}"); return; } // might have to change later
+        if (enemyTaskCacheList.Count == 0) { /*Debug.Log($"enemyTaskCacheList.Count == {enemyTaskCacheList.Count}");*/ return; } // might have to change later
         foreach(EnemyController enemyTask in enemyTaskList)
         {
             int currentIndex = enemyTaskList.IndexOf(enemyTask);
@@ -65,7 +65,7 @@ public class LevelManager : MonoBehaviour
     private void LoadAnimalTaskCache()
     {
         List<AnimalTaskCache> animalTaskCacheList = Core.GetAnimalTaskCacheList();
-        if (animalTaskCacheList.Count == 0) { Debug.Log($"animalTaskCacheList.Count == {animalTaskCacheList.Count}"); return; } // might have to change later
+        if (animalTaskCacheList.Count == 0) { /*Debug.Log($"animalTaskCacheList.Count == {animalTaskCacheList.Count}");*/ return; } // might have to change later
         foreach (AnimalController animalTask in animalTaskList)
         {
             int currentIndex = animalTaskList.IndexOf(animalTask);

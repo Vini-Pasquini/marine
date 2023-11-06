@@ -25,7 +25,7 @@ public class AnimalController : MonoBehaviour
         return targetObject != null;
     }
 
-    private float baseAnimalSpeed = 5f;
+    private float baseAnimalSpeed = 2f;
 
     private bool isSafe = false;
 

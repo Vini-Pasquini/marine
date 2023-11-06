@@ -37,7 +37,7 @@ public class BoatController : MonoBehaviour
 
     private void Start()
     {
-        radarThingy = GameObject.Find("Radar");
+        radarThingy = GameObject.Find("Radar"); // ph
         // spawn
         playerSpawn = GameObject.Find("PlayerSpawn");
         levelManeger = playerSpawn.GetComponent<LevelManager>();
@@ -168,16 +168,17 @@ public class BoatController : MonoBehaviour
 
         clickMarkerLine.SetPosition(0, this.transform.position);
         clickMarkerLine.SetPosition(clickMarkerLine.positionCount - 1, clickPosition);
-
-        float currentRange = Core.GetRadarRange() * 2f;
-        currentScale = currentScale >= currentRange ? 0f : Mathf.Min(currentRange, currentScale + (currentRange * Time.deltaTime));
-        radarThingy.transform.localScale = (Vector3.up * .01f) + ((Vector3.down + Vector3.one) * currentScale);
+        
+        radarRotation.y += 180 * Time.deltaTime;
+        radarThingy.transform.rotation = Quaternion.Euler(radarRotation);
 
         // debug stuff
 
         DebugDrawBarrierCollisionRays();
         Debug.DrawLine(this.transform.position, this.transform.position + movementDirection);
     }
+
+    Vector3 radarRotation = Vector3.zero;
 
     float currentScale = 0f;
 

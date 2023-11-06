@@ -10,6 +10,7 @@ public class BulletController : MonoBehaviour
         {
             Destroy(collision.gameObject);
             GameObject.FindGameObjectWithTag("BattleManager").GetComponent<BattleManager>().AddPoints(1);
+            //GameObject.FindGameObjectWithTag("BattleManager").GetComponent<BattleManager>()
         }
     }
 }

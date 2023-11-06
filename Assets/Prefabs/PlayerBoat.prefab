@@ -31,7 +31,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 5177015467225895852}
-  - {fileID: 4634992770132908599}
+  - {fileID: 3239742964003554524}
   - {fileID: 1751671875868888278}
   m_Father: {fileID: 0}
   m_RootOrder: 0
@@ -192,7 +192,7 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!1001 &5177015467465506268
+--- !u!1001 &3134321116277744439
 PrefabInstance:
   m_ObjectHideFlags: 0
   serializedVersion: 2
@@ -209,7 +209,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11c4905b3bf87684899af523dfd50e45, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0
+      value: 0.1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11c4905b3bf87684899af523dfd50e45, type: 3}
       propertyPath: m_LocalPosition.z
@@ -217,19 +217,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11c4905b3bf87684899af523dfd50e45, type: 3}
       propertyPath: m_LocalRotation.w
-      value: -0.5
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11c4905b3bf87684899af523dfd50e45, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11c4905b3bf87684899af523dfd50e45, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.49999997
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11c4905b3bf87684899af523dfd50e45, type: 3}
       propertyPath: m_LocalRotation.z
-      value: -0.5
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 11c4905b3bf87684899af523dfd50e45, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -247,10 +247,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerBoatModel
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 11c4905b3bf87684899af523dfd50e45, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 9100000, guid: a91c1fb4fa8543f498867ef5a5848182, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 11c4905b3bf87684899af523dfd50e45, type: 3}
---- !u!4 &4634992770132908599 stripped
+--- !u!4 &3239742964003554524 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 11c4905b3bf87684899af523dfd50e45, type: 3}
-  m_PrefabInstance: {fileID: 5177015467465506268}
+  m_PrefabInstance: {fileID: 3134321116277744439}
   m_PrefabAsset: {fileID: 0}

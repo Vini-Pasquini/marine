@@ -22,8 +22,14 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
+        // talvez mudar pra heranca mais pra frente...
         enemyTaskList = FindObjectsOfType<EnemyController>().ToList();
         animalTaskList = FindObjectsOfType<AnimalController>().ToList();
+
+        foreach (EnemyController enemyTask in enemyTaskList)
+        {
+            enemyTask.EnemyTaskInit();
+        }
 
         foreach (AnimalController animalTask in animalTaskList)
         {
@@ -32,9 +38,14 @@ public class LevelManager : MonoBehaviour
 
         LoadTaskCache();
 
+        foreach (EnemyController enemyTask in enemyTaskList)
+        {
+            enemyTask.LoadEnemyModel();
+        }
+
         foreach (AnimalController animalTask in animalTaskList)
         {
-            animalTask.LoadAnimal();
+            animalTask.LoadAnimalModel();
         }
 
         CacheTasks();

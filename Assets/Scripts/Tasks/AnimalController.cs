@@ -43,7 +43,7 @@ public class AnimalController : MonoBehaviour
         animal.SetAnimalRotationRate(baseAnimalSpeed * .1f);
     }
 
-    public void LoadAnimal()
+    public void LoadAnimalModel()
     {
         SelectAnimalType();
         Transform animalGameObject = this.transform.GetChild(1);

@@ -12,6 +12,19 @@ public class EnemyController : MonoBehaviour
     public bool IsTaskComplete() { return isTaskComplete; }
     public void SetTaskComplete(bool newValue) { isTaskComplete = newValue; }
 
+    public void EnemyTaskInit()
+    {
+        // ainda nada
+    }
+
+    public void LoadEnemyModel()
+    {
+        if (!isTaskComplete) return;
+        /* 100% placeholder */
+        this.transform.GetChild(0).gameObject.SetActive(false); // 1st model, not broken
+        this.transform.GetChild(1).gameObject.SetActive(true); // 2nd model, broken
+    }
+
     private void Start()
     {
         /* enemy init */

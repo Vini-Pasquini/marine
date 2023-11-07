@@ -30,10 +30,19 @@ public class LevelDisplayController : MonoBehaviour
     }
 
     [SerializeField] private TextMeshProUGUI taskDisplay;
+    [SerializeField] private TextMeshProUGUI animalTaskDisplay;
+    [SerializeField] private TextMeshProUGUI enemyTaskDisplay;
+    [SerializeField] private TextMeshProUGUI filthTaskDisplay;
 
     public void UpdateTaskDisplay(float newValue = -1f)
     {
-        if (taskDisplay == null) return;
-        taskDisplay.text = "TASKS:\n" + (newValue >= 0f ? newValue : Core.GetAnimalCount() + Core.GetEnemyCount());
+        int animalCount = Core.GetAnimalCount();
+        int enemyCount = Core.GetEnemyCount();
+        int filthCount = 0;
+
+        if (taskDisplay != null) taskDisplay.text = "TASKS:\n" + (newValue >= 0f ? newValue : animalCount + enemyCount);
+        if (animalTaskDisplay != null) animalTaskDisplay.text = animalCount <= 0 ? "- <color=#00FF00>Todos os animais SALVOS</color>" : $"- Salve {animalCount} Animais (Leve-os para a area segura)";
+        if (enemyTaskDisplay != null) enemyTaskDisplay.text = enemyCount <= 0? "- <color=#00FF00>Todos os cacadores DERROTADOS</color>" : $"- Derrote {enemyCount} Barcos de cacadores";
+        if (filthTaskDisplay != null) filthTaskDisplay.text = filthCount <= 0 ? "- ? ? ?" : "- ? ? ?";
     }
 }

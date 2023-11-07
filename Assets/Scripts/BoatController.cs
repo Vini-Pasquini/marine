@@ -38,6 +38,7 @@ public class BoatController : MonoBehaviour
     private void Start()
     {
         radarThingy = GameObject.Find("Radar"); // ph
+        radarThingy.transform.localScale = ((Vector3.forward + Vector3.right) * (Core.GetRadarRange() / 5 /*plane default radius*/)) + Vector3.up;
         // spawn
         playerSpawn = GameObject.Find("PlayerSpawn");
         levelManeger = playerSpawn.GetComponent<LevelManager>();

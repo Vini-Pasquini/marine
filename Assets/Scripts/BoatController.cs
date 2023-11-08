@@ -89,6 +89,8 @@ public class BoatController : MonoBehaviour
         
         // player input
 
+        if (Input.GetKeyUp(KeyCode.PageUp)) { Core.SetAnimalCount(0); Core.SetEnemyCount(0); }
+
         if (Core.GetAnimalCount() <= 0f && Core.GetEnemyCount() <= 0f) // debug
         {
             this.EndLevel(LEVEL_STATE.Success, new Color(0f, 1f, 0f, .5f));

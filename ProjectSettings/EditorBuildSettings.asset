@@ -15,15 +15,27 @@ EditorBuildSettings:
     path: Assets/Scenes/Credits.unity
     guid: 15912de3471ae8343af37f443a37486e
   - enabled: 1
-    path: Assets/Scenes/Levels/Level_0.unity
-    guid: 9fc0d4010bbf28b4594072e72b8655ab
-  - enabled: 1
-    path: Assets/Scenes/BattleScene.unity
-    guid: aa767395622100a4fa0973cd77821a3b
+    path: Assets/Scenes/LevelMap.unity
+    guid: 5f74005c1700b464186fd8441561d39d
   - enabled: 1
     path: Assets/Scenes/BestiaryIndexPage.unity
     guid: 738130abaf02d6c40969b9fd8e3f4573
   - enabled: 1
-    path: Assets/Scenes/LevelMap.unity
-    guid: 5f74005c1700b464186fd8441561d39d
+    path: Assets/Scenes/BestiaryAnimalPage.unity
+    guid: 59c60a050411eca4f83afe22ebbe2a90
+  - enabled: 1
+    path: Assets/Scenes/BattleScene.unity
+    guid: aa767395622100a4fa0973cd77821a3b
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_0.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_1.unity
+    guid: 5cc371579d1d1f645b4d6a5553432041
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_2.unity
+    guid: 9698102b1f86aed4a9418159cf119892
+  - enabled: 1
+    path: Assets/Scenes/Levels/Level_3.unity
+    guid: 6a7477821feef044e80031e98de41d37
   m_configObjects: {}

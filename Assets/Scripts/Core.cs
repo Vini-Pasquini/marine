@@ -151,8 +151,9 @@ public static class Core
         playerFuel = 100f;
         playerHealth = 100f;
         playerGold = 0f;
-        animalCount = 3;
-        enemyCount = 3;
+        animalCount = 1;
+        enemyCount = 1;
+        filthCount = 1;
         playerCache = new PlayerCache(Vector3.zero, Quaternion.identity);
         currentLevelState = levelStateOverride;
     }
@@ -172,13 +173,34 @@ public static class Core
 
     // playtest
 
-    private static int animalCount = 3;
+    private static int animalCount = 1;
     public static int GetAnimalCount() {  return animalCount; }
-    public static void SetAnimalCount(int newValue) { animalCount = newValue; }
+    public static void SetAnimalCount(int newValue) { animalCount = newValue; UpdateDisplays(); }
     public static void IncrementAnimalCount(int increment) { animalCount += increment; if (animalCount < 0f) animalCount = 0; UpdateDisplays(); }
 
-    private static int enemyCount = 3;
+    private static int enemyCount = 1;
     public static int GetEnemyCount() { return enemyCount; }
-    public static void SetEnemyCount(int newValue) { enemyCount = newValue; }
+    public static void SetEnemyCount(int newValue) { enemyCount = newValue; UpdateDisplays(); }
     public static void IncrementEnemyCount(int increment) { enemyCount += increment; if (enemyCount < 0f) enemyCount = 0; UpdateDisplays(); }
+
+    private static int filthCount = 1;
+    public static int GetFilthCount() { return filthCount; }
+    public static void SetFilthCount(int newValue) { filthCount = newValue; UpdateDisplays(); }
+    public static void IncrementFilthCount(int increment) { filthCount += increment; if (filthCount < 0f) filthCount = 0; UpdateDisplays(); }
+
+    private static int levelProgress = 0;
+    public static int GetLevelProgress() { Debug.Log($"get {levelProgress}"); return levelProgress; }
+    public static void SetLevelProgress(int newValue) { Debug.Log($"before {levelProgress}"); if (newValue >= 0) levelProgress = newValue; Debug.Log($"before {levelProgress}"); }
+    public static void IncrementLevelProgress(string levelName)
+    {
+        Debug.Log($"before {levelProgress}");
+        int currentLevel = 0;
+        Debug.Log($"current level {currentLevel}");
+        int.TryParse(levelName.Split("_")[1], out currentLevel);
+        Debug.Log($"try parse done, current level {currentLevel}");
+        if (levelProgress != currentLevel - 1) return;
+        Debug.Log($"level progress check");
+        levelProgress++;
+        Debug.Log($"after {levelProgress}");
+    }
 }

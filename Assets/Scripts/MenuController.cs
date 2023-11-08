@@ -33,9 +33,10 @@ public class MenuController : MonoBehaviour
         return true;
     }
 
-    public void OnChangeSceneButtonPress(string scene)
+    public void OnChangeSceneButtonPress(string scene) // rework if and elses later
     {
         SCENES newScene = (SCENES)Enum.Parse(typeof(SCENES), scene);
+        if (newScene == SCENES.MainMenu) Core.SetLevelProgress(0);
         if (currentScene.name == SCENES.LevelMap.ToString())
         {
             Core.SetLevelState(LEVEL_STATE.Stopped);
@@ -49,11 +50,12 @@ public class MenuController : MonoBehaviour
         SceneManager.LoadScene(newScene.ToString());
     }
 
-    public void OnBackButtonPress()
+    public void OnBackButtonPress() // rework if and elses later
     {
         SCENES lastScene = Core.GetLastActiveScene();
         Core.SetLastActiveScene((SCENES)Enum.Parse(typeof(SCENES), currentScene.name));
 
+        if (lastScene == SCENES.MainMenu) Core.SetLevelProgress(0);
         if (lastScene.ToString().StartsWith("Level_") && currentScene.name == SCENES.BattleScene.ToString()) Core.StagePlayerLoad(true); // back to level check
         if (lastScene == SCENES.LevelMap) { Core.SetLevelState(LEVEL_STATE.Stopped); Core.ClearAnimalTaskCache(); Core.ClearEnemyTaskCache(); } // ph cache
 

@@ -6,6 +6,7 @@ using TMPro;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LevelManager : MonoBehaviour
 {
@@ -26,6 +27,9 @@ public class LevelManager : MonoBehaviour
         enemyTaskList = FindObjectsOfType<EnemyController>().ToList();
         animalTaskList = FindObjectsOfType<AnimalController>().ToList();
 
+        int enemyTaskCount = 0;
+        int animalTaskCount = 0;
+
         foreach (EnemyController enemyTask in enemyTaskList)
         {
             enemyTask.EnemyTaskInit();
@@ -41,14 +45,19 @@ public class LevelManager : MonoBehaviour
         foreach (EnemyController enemyTask in enemyTaskList)
         {
             enemyTask.LoadEnemyModel();
+            if (!enemyTask.IsTaskComplete()) enemyTaskCount++;
         }
 
         foreach (AnimalController animalTask in animalTaskList)
         {
             animalTask.LoadAnimalModel();
+            if (!animalTask.IsTaskComplete()) animalTaskCount++;
         }
 
         CacheTasks();
+
+        Core.SetEnemyCount(enemyTaskCount);
+        Core.SetAnimalCount(animalTaskCount);
     }
 
     private void LoadTaskCache()
@@ -129,6 +138,7 @@ public class LevelManager : MonoBehaviour
         {
             case LEVEL_STATE.Success:
                 description.text = "Voce salvou todos os Animais e derrotou todos os Cacadores";
+                Core.IncrementLevelProgress(SceneManager.GetActiveScene().name);
                 break;
             case LEVEL_STATE.FuelFail:
                 description.text = "Acabou seu combustavel, voce ficou aa deriva! :v";

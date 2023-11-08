@@ -4629,14 +4629,17 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Mover Barco: BOTAO DIREITO
+  m_text: 'Mover Barco: BOTAO DIREITO (ou WASD)
 
-    Modo Camera: F
+    Interagir: BOTAO ESQUERDO
 
-    Mover Camera: BOTAO
-    ESQUERDO + ARRASTAR
+    Modo
+    Camera: F
 
-    Interagir: BOTAO ESQUERDO'
+    Mover Camera: BOTAO ESQUERDO + DRAG (ou SETAS)
+
+    Zoom Camera:
+    SCROLL (ou Q e E)'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

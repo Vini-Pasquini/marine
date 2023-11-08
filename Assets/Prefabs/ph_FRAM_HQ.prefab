@@ -424,15 +424,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: faf6b1edc64e2594a949d20ce870b061, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 10.0145035
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: faf6b1edc64e2594a949d20ce870b061, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 8.060986
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: faf6b1edc64e2594a949d20ce870b061, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -20.290085
+      value: -20
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: faf6b1edc64e2594a949d20ce870b061, type: 3}
       propertyPath: m_LocalRotation.w
@@ -462,6 +462,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: -7511558181221131132, guid: faf6b1edc64e2594a949d20ce870b061, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: faf6b1edc64e2594a949d20ce870b061, type: 3}
       propertyPath: m_Name
       value: AmogusModel
@@ -473,3 +477,20 @@ Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: faf6b1edc64e2594a949d20ce870b061, type: 3}
   m_PrefabInstance: {fileID: 121115278830635638}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &968028066152429351 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: faf6b1edc64e2594a949d20ce870b061, type: 3}
+  m_PrefabInstance: {fileID: 121115278830635638}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &3272740012851668852
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 968028066152429351}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 683c6f6336af0de4f87d35081f65f6f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

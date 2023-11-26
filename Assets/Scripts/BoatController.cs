@@ -12,7 +12,7 @@ public class BoatController : MonoBehaviour
     // Player Movement Constants
     private const float rotationSpeed = 2.5f;
     private const float boatSpeed = 5f;
-    private const float fuelUseRate = .005f;
+    private const float fuelUseRate = .003f;
     private const float boatSlowdownThreshold = 3f;
     private const float boatStopThreshold = .5f;
     // Basic Player Movement

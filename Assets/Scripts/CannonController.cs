@@ -53,7 +53,7 @@ public class CannonController : MonoBehaviour
         float VerticalRotation = Input.GetAxis("Vertical");
 
         transform.rotation = Quaternion.Euler(transform.rotation.eulerAngles +
-            new Vector3(0, HorizontalRotation * rotationSpeed, -VerticalRotation * rotationSpeed));
+            new Vector3(-VerticalRotation * rotationSpeed, HorizontalRotation * rotationSpeed, 0));
 
         if(yRotation >= 180.0f)
         {

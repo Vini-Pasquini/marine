@@ -8,7 +8,7 @@ public class UVTextureAnimator : MonoBehaviour
 
     float offsetTimer = 0; // timer for frame animation
     float offsetDelay = .2f; // seconds between each frame
-    float offsetSpeed = .2f; // slide speed (units per second)
+    float offsetSpeed = .1f; // slide speed (units per second)
 
     private void Start()
     {

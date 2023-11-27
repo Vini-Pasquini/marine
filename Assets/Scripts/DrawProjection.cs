@@ -25,7 +25,7 @@ public class DrawProjection : MonoBehaviour
         lineRenderer.SetPosition(0, cannonController.ShotPoint.position);
         for(int i = 1; i < numPoints; i++)
         {
-            Vector3 pointPosition = cannonController.ShotPoint.position + (cannonController.transform.up * i);
+            Vector3 pointPosition = cannonController.ShotPoint.position + (cannonController.transform.forward * i);
             lineRenderer.SetPosition(i, pointPosition);
         }
 

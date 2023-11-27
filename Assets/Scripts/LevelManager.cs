@@ -18,6 +18,8 @@ public class LevelManager : MonoBehaviour
 
     // placeholder
     [SerializeField] private GameObject levelOverOverlay;
+    [SerializeField] private GameObject background;
+    [SerializeField] private GameObject image;
     [SerializeField] private TextMeshProUGUI overText;
     [SerializeField] private TextMeshProUGUI description;
 
@@ -131,9 +133,13 @@ public class LevelManager : MonoBehaviour
     public void DisplayLevelOverScreen(LEVEL_STATE endState, Color screenColor)
     {
         levelOverOverlay.GetComponent<Image>().color = screenColor;
+        (float, float, float) HSVColor = (0f, 0f, 0f);
+        Color.RGBToHSV(screenColor, out HSVColor.Item1, out HSVColor.Item2, out HSVColor.Item3);
+        HSVColor.Item3 = .5f;
+        background.GetComponent<Image>().color = Color.HSVToRGB(HSVColor.Item1, HSVColor.Item2, HSVColor.Item3);
         levelOverOverlay.SetActive(true);
         Core.SetLevelState(endState);
-        overText.text = (endState == LEVEL_STATE.Success ? "VOCE GANHOU" : "VOCE PERDEU");
+        overText.text = (endState == LEVEL_STATE.Success ? "VITORIA" : "DERROTA");
         switch (endState)
         {
             case LEVEL_STATE.Success:

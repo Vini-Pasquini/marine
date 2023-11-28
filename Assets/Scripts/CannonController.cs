@@ -12,7 +12,7 @@ public class CannonController : MonoBehaviour
     public GameObject CannonBall;
     public Transform ShotPoint;
 
-    public float timer = 0.0f;
+    public float timer = 2.5f;
 
     public bool canShoot = true;
     public bool hasAmmo = true;
@@ -24,9 +24,13 @@ public class CannonController : MonoBehaviour
     public float yRotation;
     public float ZRotation;
 
+    private Animator harpoonAnim;
+    private bool reloadAnim = true;
+
     private void Start()
     {
         bulletDisplay.text = "AMMO:\n" + bulletsCounts.ToString();
+        harpoonAnim = this.GetComponentInChildren<Animator>();
     }
 
     private void Update()
@@ -69,23 +73,29 @@ public class CannonController : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Space))
             {
+                harpoonAnim.Play("Shoot");
                 bulletsCounts -= 1;
                 bulletDisplay.text = "AMMO:\n" + bulletsCounts.ToString();
                 GameObject CreateCannonBall = Instantiate(CannonBall, ShotPoint.position, ShotPoint.rotation);
                 CreateCannonBall.GetComponent<Rigidbody>().velocity = ShotPoint.transform.up * BlastPower;
                 Destroy(CreateCannonBall, 5);
-                
+                timer = 2.5f;
+                reloadAnim = true;
                 canShoot = false;
             }
         }
-        else
+
+        timer -= Time.deltaTime;
+
+        if (timer <= .5f && reloadAnim)
         {
-            timer += Time.deltaTime;
-            if (timer >= 2.5f)
-            {
-                timer = 0;
-                canShoot = true;
-            }
+            harpoonAnim.Play("Reload");
+            reloadAnim = false;
+        }
+
+        if (timer <= 0 && !canShoot)
+        {
+            canShoot = true;
         }
     }
 }
